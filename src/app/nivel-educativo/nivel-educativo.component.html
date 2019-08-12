@@ -1,0 +1,92 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-lg">
+      <div class="caja-main rounded" [ngClass]="{
+          'div-completo' : tamano_pantalla > 991, 
+          '': tamano_pantalla < 992}">
+        <!--<div class="alert alert-info text-right" role="alert">
+            Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b> |
+            <a routerLink="/login" class="alert-link">Salir</a>
+          </div>-->
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b>!</h4>
+          Administración del catálogo de tipos de niveles educativos
+        </div>
+        <div *ngIf="!ver_nuevo">
+          <div class="text-right">
+            <button type="submit" (click)="ver_nuevo = true;"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Nuevo</button>
+          </div>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros" placeholder="Filtro">
+          </div>
+          <div *ngIf="niveles_educativos; else sin_registros" class="scroll sin-registros">
+            <table class="table table-striped table-bordered table-hover table-sm">
+              <thead class="thead-dark">
+                <th class="nivel">Nivel educativo</th>
+                <th class="estado-nivel">Estado</th>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let nivel_educativo of niveles_educativos| grdFilter: {nivel_educativo: filtro}; let i = index">
+                  <td>
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="edita(nivel_educativo, 'nivel_educativo', 32)">{{nivel_educativo.nivel_educativo}}</span>
+                  </td>
+                  <td>
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="swith{{i}}"
+                        [(ngModel)]="nivel_educativo.estado_nivel" (change)="cambiaEstado(nivel_educativo, $event)">
+                      <label class="custom-control-label" for="swith{{i}}"></label>
+                    </div>
+                    <span *ngIf="nivel_educativo.estado_nivel; else desactivado">Activo</span>
+                    <ng-template #desactivado><span>Desactivado</span></ng-template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #sin_registros>
+            <div class="alert alert-danger sin-registros" role="alert">
+              No existen niveles educativos registrados.
+            </div>
+          </ng-template>
+        </div>
+
+        <div *ngIf="ver_nuevo">
+          <p>Ingresa todos los datos del nuevo nivel educativo.</p>
+          <form name="form" #f="ngForm">
+
+            <div class="form-row">
+              <!--Nombre del nivel_educativo-->
+              <div class="form-group col-md-6">
+                <label for="nivel_educativo">* Nombre del nivel educativo</label>
+                <input type="text" class="form-control form-control-sm" id="nivel_educativo"
+                  placeholder="Nombre del nivel educativo" required name="nivel_educativo"
+                  [(ngModel)]="nuevo_nivel_educativo.nivel_educativo" #nivel_educativo="ngModel" minlength="1"
+                  maxlength="32" [ngClass]="{
+                      'is-valid' : nivel_educativo.touched && nivel_educativo.valid, 
+                      'is-invalid': nivel_educativo.touched && nivel_educativo.invalid}">
+                <div *ngIf="nivel_educativo.invalid" class="invalid-feedback">
+                  <div *ngIf="nivel_educativo.errors.required">Campo obligatorio</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-right">
+              <button *ngIf="nivel_educativo.valid" type="submit" (click)="altaNivelEducativo()"
+                class="btn btn-primary btn-sm btn-grp col-md-2">Aceptar</button>
+              <button *ngIf="nivel_educativo.invalid" type="submit"
+                class="btn btn-primary btn-sm btn-grp col-md-2 disabled">Aceptar</button>
+              <button type="submit" (click)="cancelaAlta()"
+                class="btn btn-danger btn-sm btn-grp col-md-2">Cancelar</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

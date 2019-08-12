@@ -1,0 +1,15 @@
+.sin-registros{
+    margin: 15px 0 0 0;
+}
+
+table{
+    width: 100%;
+    table-layout: fixed;
+}
+.estado{
+    width: 74%;
+}
+
+.estado-estado{
+    width: 26%;
+}

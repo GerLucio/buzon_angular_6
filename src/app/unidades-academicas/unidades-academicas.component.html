@@ -1,0 +1,132 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-lg">
+      <div class="caja-main rounded" [ngClass]="{
+            'div-completo' : tamano_pantalla > 991, 
+            '': tamano_pantalla < 992}">
+        <!--<div class="alert alert-info text-right" role="alert">
+            Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b> |
+            <a routerLink="/login" class="alert-link">Salir</a>
+          </div>-->
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b>!</h4>
+          Administración del catálogo de Unidades Académicas y Dependencias
+        </div>
+        <div *ngIf="!ver_nuevo">
+          <div class="text-right">
+            <button type="submit" (click)="ver_nuevo = true;"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Nuevo</button>
+          </div>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros" placeholder="Filtro">
+          </div>
+          <div *ngIf="unidades_academicas; else sin_registros" class="scroll sin-registros">
+            <table class="table table-striped table-bordered table-hover table-sm">
+              <thead class="thead-dark">
+                <th class="unidad">Unidad Académica o Dependencia</th>
+                <th class="estado-unidad">Estado</th>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let unidad_academica of unidades_academicas| grdFilter: {unidad_academica: filtro}; let i = index">
+                  <td>
+                    <a data-toggle="collapse" href="#collapse{{i}}" role="button" aria-expanded="false"
+                      attr.aria-controls="#collapse{{i}}">{{unidad_academica.unidad_academica}} <i
+                        class="fa fa-caret-down" aria-hidden="true"></i></a>
+                    <div class="collapse" id="collapse{{i}}">
+                <tr>
+                  <td class="w-auto">Unidad Académica</td>
+                  <td class="w-100">
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                      (click)="edita(unidad_academica, 'unidad_academica', 128)">{{unidad_academica.unidad_academica}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="w-auto">Nivel Educativo</td>
+                  <td class="w-100">
+                    <div *ngIf="niveles_educativos; else sinNiveles">
+                      <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                        (click)="editaSelect(unidad_academica, 'nivel_educativo')">{{niveles_educativos[unidad_academica.nivel_educativo]}}</span>
+                    </div>
+                    <ng-template #sinNiveles>
+                      <p class="text-danger">
+                        No hay niveles educativos registrados
+                      </p>
+                    </ng-template>
+                  </td>
+                </tr>
+          </div>
+          </td>
+          <td>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="swith{{i}}"
+                [(ngModel)]="unidad_academica.estado_unidad" (change)="cambiaEstado(unidad_academica, $event)">
+              <label class="custom-control-label" for="swith{{i}}"></label>
+            </div>
+            <span *ngIf="unidad_academica.estado_unidad; else desactivado">Activo</span>
+            <ng-template #desactivado><span>Desactivado</span></ng-template>
+          </td>
+          </tr>
+
+          </tbody>
+          </table>
+        </div>
+        <ng-template #sin_registros>
+          <div class="alert alert-danger sin-registros" role="alert">
+            No existen unidades academicas registradas.
+          </div>
+        </ng-template>
+      </div>
+
+      <div *ngIf="ver_nuevo">
+        <p>Ingresa todos los datos de la nueva unidad académica o dependencia.</p>
+        <form name="form" #f="ngForm">
+
+
+          <!--Nombre de la unidad_academica-->
+          <div class="form-group col-md">
+            <label for="unidad_academica">* Nombre de la unidad académica</label>
+            <input type="text" class="form-control form-control-sm" id="unidad_academica"
+              placeholder="Nombre de la unidad académica" required name="unidad_academica"
+              [(ngModel)]="nueva_unidad_academica.unidad_academica" #unidad_academica="ngModel" minlength="1"
+              maxlength="128" [ngClass]="{
+                      'is-valid' : unidad_academica.touched && unidad_academica.valid, 
+                      'is-invalid': unidad_academica.touched && unidad_academica.invalid}">
+            <div *ngIf="unidad_academica.invalid" class="invalid-feedback">
+              <div *ngIf="unidad_academica.errors.required">Campo obligatorio</div>
+            </div>
+          </div>
+
+          <!--Nivel educativo-->
+          <div class="form-group col-md-6">
+            <label for="nivel_educativo">* Nivel Educativo</label>
+            <select class="form-control form-control-sm" id="nivel_educativo" name="nivel_educativo"
+              [(ngModel)]="nueva_unidad_academica.nivel_educativo" #nivel_educativo="ngModel" required [ngClass]="{
+                      'is-valid' : nivel_educativo.touched && nivel_educativo.valid, 
+                      'is-invalid': nivel_educativo.touched && nivel_educativo.invalid}">
+              <option *ngFor="let nivel_educativo of niveles_educativos2; let i=index" value="{{nivel_educativo.value}}">
+                {{nivel_educativo.text}}</option>
+            </select>
+            <div *ngIf="nivel_educativo.invalid" class="invalid-feedback">
+              <div *ngIf="nivel_educativo.errors.required">Campo obligatorio</div>
+            </div>
+          </div>
+
+
+          <div class="text-right">
+            <button *ngIf="unidad_academica.valid && nivel_educativo.valid" type="submit" (click)="altaUnidad()"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Aceptar</button>
+            <button *ngIf="unidad_academica.invalid || nivel_educativo.invalid" type="submit"
+              class="btn btn-primary btn-sm btn-grp col-md-2 disabled">Aceptar</button>
+            <button type="submit" (click)="cancelaAlta()"
+              class="btn btn-danger btn-sm btn-grp col-md-2">Cancelar</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

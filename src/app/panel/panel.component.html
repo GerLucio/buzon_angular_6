@@ -1,0 +1,500 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-lg">
+      <div class="caja-main rounded" [ngClass]="{
+          'div-completo' : tamano_pantalla > 991, 
+          '': tamano_pantalla < 992}">
+        <!--<div class="alert alert-info text-right" role="alert">
+          Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b> |
+          <a routerLink="/login" class="alert-link">Salir</a>
+        </div>-->
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b>!</h4>
+          Panel de administración de sugerencias
+        </div>
+
+        <div *ngIf="ver_panel" [ngClass]="{
+          'scroll-panel' : tamano_pantalla > 991, 
+          '': tamano_pantalla < 992}">
+          <div *ngIf="estados; else sinEstados" class="row">
+            <div *ngFor="let estado of estados; let i = index" class="col-md-6">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h3 class="card-title">
+                    <!--<i class="{{estado.icono}}" aria-hidden="true"></i> --><b>{{estado.estado}} </b><span
+                      class="{{estado.color}}">{{estado.numero}}</span></h3>
+                  <p class="card-text">{{estado.descripcion}}</p>
+                  <button [disabled]="estado.numero == 0" type="submit" (click)="verTabla(estado)"
+                    class="btn btn-sm btn-outline-dark btn-grp col-lg-3">Administrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #sinEstados>
+            <div class="alert alert-danger" role="alert">
+              No existen estados registrados.
+            </div>
+          </ng-template>
+        </div>
+
+        <div *ngIf="ver_tabla">
+          <div class="text-right">
+            <button type="submit" (click)="verPanel()" class="btn btn-primary btn-sm btn-grp col-md-2">Regresar</button>
+          </div>
+
+          <div class="form-row sin-registros">
+            <div class="form-group col-md-3">
+              <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm" placeholder="Filtro">
+            </div>
+
+            <!--Fecha inicio-->
+              <div class="form-group col-md-3 col-6">
+                <div>
+                  <input type="date" class="form-control form-control-sm" id="fecha_i" name="fecha_i"
+                    [(ngModel)]="modelo.fecha_i" #fecha_i="ngModel" [ngClass]="{
+                                  'is-valid' : fecha_i.touched && fecha_i.valid, 
+                                  'is-invalid': fecha_i.touched && fecha_i.invalid}">
+                </div>
+              </div>
+
+              <!--Fecha fin-->
+              <div class="form-group col-md-3 col-6">
+                <div>
+                  <input type="date" class="form-control form-control-sm" id="fecha_f" name="fecha_f"
+                    [(ngModel)]="modelo.fecha_f" #fecha_f="ngModel" [ngClass]="{
+                                'is-valid' : fecha_f.touched && fecha_f.valid, 
+                                'is-invalid': fecha_f.touched && fecha_f.invalid}"
+                    (change)="filtraFecha($event, 'filtro_fecha')">
+                </div>
+              </div>
+
+            <!--Área de asignación-->
+            <div class="form-group col-lg-2 col-md-3">
+              <select class="form-control form-control-sm" id="area" name="area" [(ngModel)]="modelo.area"
+              (change)="verTabla(estado_actual)"
+                #area="ngModel" [ngClass]="{
+                'is-valid' : area.touched && area.valid, 
+                'is-invalid': area.touched && area.invalid}">
+                <option value="0">Sin registro</option>
+                <option *ngFor="let area of areas_select; let i = index" value="{{area.id_area}}">
+                  {{area.area_asignacion}}</option>
+              </select>
+              <div *ngIf="area.invalid" class="invalid-feedback">
+                <div *ngIf="area.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+
+            <div class="col-lg-1">
+              <button type="submit" [disabled]="validaBotonLimpia()" (click)="limpia()" class="btn btn-warning btn-sm btn-grp col"
+                title="Borrar filtros"><i class="fa fa-eraser" aria-hidden="true"></i> Borrar</button>
+            </div>
+
+          </div>
+
+          <div *ngIf="sugerencias; else sin_registros" class="scroll sin-registros">
+            <table class="table table-striped table-bordered table-hover table-sm">
+              <thead class="thead-dark">
+                <th>Folio</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Usuario</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let sugerencia of sugerencias| grdFilter: {folio_sugerencia: filtro, 
+                  tipo_sugerencia: filtro, fecha_sugerencia: filtro}; let i = index">
+                  <td><span class="folio" data-toggle="tooltip" data-placement="right"
+                      title="Clic para ever más detalles"
+                      (click)="verDetalles(sugerencia)">{{sugerencia.folio_sugerencia}}</span></td>
+                  <td>{{sugerencia.tipo_sugerencia}}</td>
+                  <td>{{sugerencia.fecha_sugerencia}}</td>
+                  <td>{{sugerencia.tipo_usuario}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #sin_registros>
+            <div class="alert alert-danger sin-registros" role="alert">
+              No hay sugerencias registradas.
+            </div>
+          </ng-template>
+        </div>
+
+        <div *ngIf="ver_detalles">
+          <div class="text-right">
+            <button type="submit" (click)="verTabla(estado_actual)"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Regresar</button>
+          </div>
+          <div class="scroll-detalles sin-registros">
+            <table class="table table-striped table-bordered table-hover table-sm">
+              <thead class="thead-dark">
+                <th colspan="2">Detalles de sugerencia</th>
+              </thead>
+              <!--Recibida-->
+              <tbody *ngIf="sugerencia_actual.estado == 'Recibida'">
+                <tr>
+                  <th style="width: 16%">Folio</th>
+                  <td style="width: 84%">{{sugerencia_actual.folio_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Tipo</th>
+                  <td>{{sugerencia_actual.tipo_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Fecha</th>
+                  <td>{{sugerencia_actual.fecha_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Sugerencia</th>
+                  <td>{{sugerencia_actual.sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Propuesta de solución</th>
+                  <td>{{sugerencia_actual.propuesta}}</td>
+                </tr>
+
+                <tr>
+                  <th>Prioridad</th>
+                  <td *ngIf="sugerencia_actual.prioridad; else noPrioridad">{{sugerencia_actual.prioridad}}</td>
+                  <ng-template #noPrioridad>
+                    <td>
+                      <span class="badge badge-danger">Sin registro</span>
+                      <span (click)="Administrar()" class="editable badge badge-dark">Clic para asignar</span>
+                    </td>
+                  </ng-template>
+                </tr>
+                <tr>
+                  <th>Área de asignación</th>
+                  <td *ngIf="sugerencia_actual.area_asignacion; else noArea">{{sugerencia_actual.area_asignacion}}</td>
+                  <ng-template #noArea>
+                    <td>
+                      <span class="badge badge-danger">Sin registro</span>
+                      <span (click)="Administrar()" class="editable badge badge-dark">Clic para asignar</span>
+                    </td>
+                  </ng-template>
+                </tr>
+                <tr>
+                  <th>Estado</th>
+                  <td>
+                    <span class="{{estado_actual.color}}">{{sugerencia_actual.estado}}</span>
+                    <span (click)="CancelarSugerencia()" class="editable badge badge-dark">Clic para cancelar</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th>Archivo adjunto</th>
+                  <td><i *ngIf="sugerencia_actual.archivo" (click)="ver_documento(sugerencia_actual.archivo)"
+                      class="fa fa-download" aria-hidden="true"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-white bg-dark" colspan="2">Detalles del usuario</th>
+                </tr>
+                <tr>
+                  <th>Usuario</th>
+                  <td>{{sugerencia_actual.tipo_usuario}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.relacion_instituto">
+                  <th>Relación con el Instituto</th>
+                  <td>{{sugerencia_actual.relacion_instituto}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.unidad_academica">
+                  <th>Unidad Académica</th>
+                  <td>{{sugerencia_actual.unidad_academica}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.nombre || sugerencia_actual.apellidos">
+                  <th>Nombre completo</th>
+                  <td>{{sugerencia_actual.nombre}} {{sugerencia_actual.apellidos}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.correo">
+                  <th>Correo</th>
+                  <td>{{sugerencia_actual.correo}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.telefono">
+                  <th>Teléfono</th>
+                  <td>{{sugerencia_actual.telefono}}</td>
+                </tr>
+              </tbody>
+              <!--Canalizada-->
+              <tbody *ngIf="sugerencia_actual.estado == 'Canalizada'">
+                <tr>
+                  <th style="width: 16%">Folio</th>
+                  <td style="width: 84%">{{sugerencia_actual.folio_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Tipo</th>
+                  <td>{{sugerencia_actual.tipo_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Fecha</th>
+                  <td>{{sugerencia_actual.fecha_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Sugerencia</th>
+                  <td>{{sugerencia_actual.sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Propuesta de solución</th>
+                  <td>{{sugerencia_actual.propuesta}}</td>
+                </tr>
+                <tr>
+                  <th>Prioridad</th>
+                  <td>
+                    <span *ngIf="prioridades; else noprioridades"
+                      (click)="editaprioridad(sugerencia_actual, 'prioridad')" class="editable" data-toggle="tooltip"
+                      data-placement="right" title="Clic para editar">
+                      <span *ngIf="prioridades[sugerencia_actual.id_prioridad]; else otraprioridad">
+                        {{prioridades[sugerencia_actual.id_prioridad]}}
+                        <span class="editable badge badge-dark">Clic para editar</span>
+                      </span>
+                      <ng-template #otraprioridad>
+                        <span class="text-danger">Prioridad actual no disponible.</span>
+                        <span class="editable badge badge-dark">Clic para asignar una nueva</span>
+                      </ng-template>
+                    </span>
+                    <ng-template #noprioridades>
+                      <span class="text-danger">No hay prioridades dadas de alta.</span>
+                    </ng-template>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Área de asignación</th>
+                  <td>
+                    <span *ngIf="areas; else noareas" (click)="editaArea(sugerencia_actual, 'area_asignacion')"
+                      class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar">
+                      <span *ngIf="areas[sugerencia_actual.id_area_asignacion]; else otraarea">
+                        {{areas[sugerencia_actual.id_area_asignacion]}}
+                        <span class="editable badge badge-dark">Clic para editar</span>
+                      </span>
+                      <ng-template #otraarea>
+                        <span class="text-danger">Área actual no disponible.</span>
+                        <span class="editable badge badge-dark">Clic para asignar una nueva</span>
+                      </ng-template>
+                    </span>
+                    <ng-template #noareas>
+                      <span class="text-danger">No hay áreas de asignación dadas de alta.</span>
+                    </ng-template>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Estado</th>
+                  <td>
+                    <span class="{{estado_actual.color}}">{{sugerencia_actual.estado}}</span>
+                    <!--<span *ngIf="estados_select; else noestados" (click)="editaEstado(sugerencia_actual, 'estado')"
+                      class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar">
+                      <span *ngIf="estados_select[sugerencia_actual.id_estado]; else otroestado">
+                        <span
+                          class="{{estado_actual.color}} editable">{{estados_select[sugerencia_actual.id_estado]}}</span>
+                      </span>
+                      <ng-template #otroestado>
+                        <span class="text-danger">Estado actual actual no disponible. <span class="badge badge-dark">Clic para asignar</span> uno
+                          nuevo.</span>
+                      </ng-template>
+                    </span>
+                    <ng-template #noestados>
+                      <span class="text-danger">No hay estados dados de alta.</span>
+                    </ng-template>-->
+                  </td>
+                </tr>
+
+                <tr>
+                  <th>Archivo adjunto</th>
+                  <td><i *ngIf="sugerencia_actual.archivo" (click)="ver_documento(sugerencia_actual.archivo)"
+                      class="fa fa-download" aria-hidden="true"></i>
+                  </td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.comentario_usuario">
+                  <th class="badge badge-warning">Comentario del usuario</th>
+                  <td>{{sugerencia_actual.comentario_usuario}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-white bg-dark" colspan="2">Detalles del usuario</th>
+                </tr>
+                <tr>
+                  <th>Usuario</th>
+                  <td>{{sugerencia_actual.tipo_usuario}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.relacion_instituto">
+                  <th>Relación con el Instituto</th>
+                  <td>{{sugerencia_actual.relacion_instituto}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.unidad_academica">
+                  <th>Unidad Académica</th>
+                  <td>{{sugerencia_actual.unidad_academica}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.nombre || sugerencia_actual.apellidos">
+                  <th>Nombre completo</th>
+                  <td>{{sugerencia_actual.nombre}} {{sugerencia_actual.apellidos}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.correo">
+                  <th>Correo</th>
+                  <td>{{sugerencia_actual.correo}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.telefono">
+                  <th>Teléfono</th>
+                  <td>{{sugerencia_actual.telefono}}</td>
+                </tr>
+              </tbody>
+              <!--Atendida-->
+              <tbody *ngIf="sugerencia_actual.estado == 'Atendida'">
+                <tr>
+                  <th style="width: 16%">Folio</th>
+                  <td style="width: 84%">{{sugerencia_actual.folio_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Tipo</th>
+                  <td>{{sugerencia_actual.tipo_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Fecha</th>
+                  <td>{{sugerencia_actual.fecha_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Sugerencia</th>
+                  <td>{{sugerencia_actual.sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Propuesta de solución</th>
+                  <td>{{sugerencia_actual.propuesta}}</td>
+                </tr>
+                <tr>
+                  <th>Prioridad</th>
+                  <td>{{sugerencia_actual.prioridad}}</td>
+                </tr>
+                <tr>
+                  <th>Área de asignación</th>
+                  <td>{{sugerencia_actual.area_asignacion}}</td>
+                </tr>
+                <tr>
+                  <th>Estado</th>
+                  <td>
+                    <span *ngIf="estados_select; else noestados" (click)="editaEstado(sugerencia_actual, 'estado')"
+                      class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar">
+                      <span class="{{estado_actual.color}} editable">{{sugerencia_actual.estado}}</span>
+                    </span>
+                    <ng-template #noestados>
+                      <span class="text-danger">No hay estados dados de alta.</span>
+                    </ng-template>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th>Archivo adjunto</th>
+                  <td><i *ngIf="sugerencia_actual.archivo" (click)="ver_documento(sugerencia_actual.archivo)"
+                      class="fa fa-download" aria-hidden="true"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-white bg-dark" colspan="2">Detalles del usuario</th>
+                </tr>
+                <tr>
+                  <th>Usuario</th>
+                  <td>{{sugerencia_actual.tipo_usuario}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.relacion_instituto">
+                  <th>Relación con el Instituto</th>
+                  <td>{{sugerencia_actual.relacion_instituto}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.unidad_academica">
+                  <th>Unidad Académica</th>
+                  <td>{{sugerencia_actual.unidad_academica}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.nombre || sugerencia_actual.apellidos">
+                  <th>Nombre completo</th>
+                  <td>{{sugerencia_actual.nombre}} {{sugerencia_actual.apellidos}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.correo">
+                  <th>Correo</th>
+                  <td>{{sugerencia_actual.correo}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.telefono">
+                  <th>Teléfono</th>
+                  <td>{{sugerencia_actual.telefono}}</td>
+                </tr>
+              </tbody>
+              <!--Otra-->
+              <tbody
+                *ngIf="sugerencia_actual.estado != 'Recibida' && sugerencia_actual.estado != 'Canalizada'  && sugerencia_actual.estado != 'Atendida'">
+                <tr>
+                  <th style="width: 16%">Folio</th>
+                  <td style="width: 84%">{{sugerencia_actual.folio_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Tipo</th>
+                  <td>{{sugerencia_actual.tipo_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Fecha</th>
+                  <td>{{sugerencia_actual.fecha_sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Sugerencia</th>
+                  <td>{{sugerencia_actual.sugerencia}}</td>
+                </tr>
+                <tr>
+                  <th>Propuesta de solución</th>
+                  <td>{{sugerencia_actual.propuesta}}</td>
+                </tr>
+
+                <tr>
+                  <th>Prioridad</th>
+                  <td>{{sugerencia_actual.prioridad}}</td>
+                </tr>
+                <tr>
+                  <th>Área de asignación</th>
+                  <td>{{sugerencia_actual.area_asignacion}}</td>
+                </tr>
+                <tr>
+                  <th>Estado</th>
+                  <td><span class="{{estado_actual.color}}">{{sugerencia_actual.estado}}</span></td>
+                </tr>
+
+                <tr>
+                  <th>Archivo adjunto</th>
+                  <td><i *ngIf="sugerencia_actual.archivo" (click)="ver_documento(sugerencia_actual.archivo)"
+                      class="fa fa-download" aria-hidden="true"></i>
+                  </td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.comentario_final">
+                  <th>Comentario final</th>
+                  <td>
+                    {{sugerencia_actual.comentario_final}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-white bg-dark" colspan="2">Detalles del usuario</th>
+                </tr>
+                <tr>
+                  <th>Usuario</th>
+                  <td>{{sugerencia_actual.tipo_usuario}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.relacion_instituto">
+                  <th>Relación con el Instituto</th>
+                  <td>{{sugerencia_actual.relacion_instituto}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.unidad_academica">
+                  <th>Unidad Académica</th>
+                  <td>{{sugerencia_actual.unidad_academica}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.nombre || sugerencia_actual.apellidos">
+                  <th>Nombre completo</th>
+                  <td>{{sugerencia_actual.nombre}} {{sugerencia_actual.apellidos}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.correo">
+                  <th>Correo</th>
+                  <td>{{sugerencia_actual.correo}}</td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.telefono">
+                  <th>Teléfono</th>
+                  <td>{{sugerencia_actual.telefono}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

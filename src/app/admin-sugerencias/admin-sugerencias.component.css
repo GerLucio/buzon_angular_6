@@ -1,0 +1,36 @@
+.card{
+    margin-bottom: 10px;
+}
+
+.sin-registros{
+    margin: 15px 0 0 0;
+}
+
+.scroll-panel{
+    max-height: 42rem;
+    overflow-y: scroll;
+}
+
+.scroll-panel::-webkit-scrollbar { 
+    display: none; 
+}
+
+.scroll-detalles{
+    max-height: 40rem;
+    overflow-y: scroll;
+}
+
+.scroll-detalles::-webkit-scrollbar { 
+    display: none; 
+}
+
+.folio{
+    text-decoration-line: underline;
+    color: #00569c;
+    cursor: pointer;
+}
+
+i.fa-download{
+    color:green;
+    cursor: pointer;
+}

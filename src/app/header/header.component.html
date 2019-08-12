@@ -1,0 +1,122 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top frente">
+    <div class="container">
+        <a class="navbar-brand" href="https://www.gob.mx/">
+            <img src="./assets/img/logo_gob.svg" width="100" alt="">
+        </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://www.gob.mx/tramites">Trámites<span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://www.gob.mx/gobierno">Gobierno<span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://www.gob.mx/participa/inicio">Participa<span
+                            class="sr-only"></span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://www.gob.mx/busqueda">Datos<span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://www.gob.mx/tramites">
+                        <span class="fa fa-search"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg fixed-top fixed-top-2 justify-content-center">
+    <a class="navbar-brand d-flex w-50 mr-auto" routerLink="/">Buzón de Sugerencias</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse w-100" id="menu">
+        <ul class="navbar-nav w-100 justify-content-center">
+            <li class="nav-item active">
+                <img width="160px" src="./assets/img/logo_upev_3.png" class="img-fluid" alt="Logo IPN">
+            </li>
+        </ul>
+        <ul *ngIf="!autenticado" class="nav navbar-nav ml-auto w-100 justify-content-end">
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/login"><span class="fa fa-sign-in"></span>
+                    Iniciar sesión</a>
+            </li>
+        </ul>
+        <ul *ngIf="autenticado && usuario_actual.rol == 'admin'"
+            class="nav navbar-nav ml-auto w-100 justify-content-end">
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownadmin" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Administración
+                </a>
+                <div class="dropdown-menu dropdown-menu-right animated flipInX" aria-labelledby="dropdownadmin">
+                    <a class="dropdown-item" routerLink="/panel">Sugerencias</a>
+                    <a class="dropdown-item" routerLink="/admin_usuario">Usuario</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdowncatalogos" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Catálogos
+                </a>
+                <div class="dropdown-menu dropdown-menu-right animated flipInX" aria-labelledby="dropdowncatalogos">
+                    <a class="dropdown-item" routerLink="/areas">Áreas de asignación</a>
+                    <a class="dropdown-item" routerLink="/estados">Estados</a>
+                    <a class="dropdown-item" routerLink="/nivel_educativo">Niveles Educativos</a>
+                    <a class="dropdown-item" routerLink="/prioridades">Prioridades</a>
+                    <a class="dropdown-item" routerLink="/relaciones">Relaciones con el Instituto</a>
+                    <a class="dropdown-item" routerLink="/catalogo_sugerencias">Tipos de Sugerencias</a>
+                    <a class="dropdown-item" routerLink="/tipo_usuario">Tipos de Usuarios</a>
+                    <a class="dropdown-item" routerLink="/unidades_academicas">Unidades Académicas y Dependencias</a>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/graficos">Gráficos</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/login">
+                    <span class="fa fa-sign-out"></span> Salir
+                </a>
+            </li>
+        </ul>
+
+        <ul *ngIf="autenticado && usuario_actual.rol != 'admin'"
+            class="nav navbar-nav ml-auto w-100 justify-content-end">
+
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownadmin2" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Administración
+                </a>
+                <div class="dropdown-menu dropdown-menu-right animated flipInX" aria-labelledby="dropdownadmin2">
+                    <a class="dropdown-item" routerLink="/">Cuenta</a>
+                    <a class="dropdown-item" routerLink="/administracion_sugerencias">Sugerencias</a>
+                </div>
+            </li>
+
+            <li *ngIf="usuario_actual.area_asignacion=='Dirección'" class="nav-item active">
+                <a class="nav-link" routerLink="/direccion">Dirección</a>
+            </li>
+
+            <li *ngIf="usuario_actual.area_asignacion=='Dirección'" class="nav-item active">
+                <a class="nav-link" routerLink="/graficos">Gráficos</a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/login">
+                    <span class="fa fa-sign-out"></span> Salir
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

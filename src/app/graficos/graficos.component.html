@@ -1,0 +1,150 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-lg">
+      <div class="caja-main rounded" [ngClass]="{
+            'div-completo' : tamano_pantalla > 991, 
+            '': tamano_pantalla < 992}">
+        <!--<div class="alert alert-info text-right" role="alert">
+            Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b> |
+            <a routerLink="/login" class="alert-link">Salir</a>
+          </div>-->
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b>!</h4>
+          Gráficos
+        </div>
+
+        <div class="card bg-light">
+          <div class="form-row card-body">
+
+            <!--Tipo de gráfico-->
+            <!--<div class="form-group col-lg-3 col-md-6">
+                  <label for="tipo">* Tipo de gráfico</label>
+                  <select (change)="eligeTipo($event)" class="form-control form-control-sm" id="tipo" required name="tipo"
+                    [(ngModel)]="modelo.tipo" #tipo="ngModel" [ngClass]="{
+                      'is-valid' : tipo.touched && tipo.valid, 
+                      'is-invalid': tipo.touched && tipo.invalid}">
+                    <option *ngFor="let tipo of tipos_graficos; let i = index" value="{{tipo.valor}}">
+                      {{tipo.texto}}</option>
+                  </select>
+                  <div *ngIf="tipo.invalid" class="invalid-feedback">
+                    <div *ngIf="tipo.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>-->
+
+            <!--Dimensión-->
+            <div class="form-group col-lg-3 col-4">
+              <label for="dimension">* Campo</label>
+              <select (change)="dibujaGrafico($event, 'dimension')" class="form-control form-control-sm" id="dimension"
+                required name="dimension" [(ngModel)]="modelo.dimension" #dimension="ngModel" [ngClass]="{
+                          'is-valid' : dimension.touched && dimension.valid, 
+                          'is-invalid': dimension.touched && dimension.invalid}">
+                <option *ngFor="let dimension of dimensiones; let i = index" value="{{dimension.valor}}">
+                  {{dimension.texto}}</option>
+              </select>
+              <div *ngIf="dimension.invalid" class="invalid-feedback">
+                <div *ngIf="dimension.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-4">
+              <label>* Tipo gráfica</label>
+              <div>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                  <button *ngFor="let tipo of tipos_graficos; let i = index" type="button" class="btn btn-success"
+                    (click)="eligeTipo2(tipo.valor)">{{tipo.texto}}</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-lg-6 col-4 text-right">
+              <!--Botones-->
+              <label>Acciones</label><br>
+              <button type="submit" *ngIf="ver_descarga" (click)="exportar()" class="btn btn-primary btn-sm btn-grp"
+                title="Exportar"><i class="fa fa-download" aria-hidden="true"></i> Descarga</button>
+              <button type="submit" *ngIf="modelo.filtro || modelo.fecha_f" (click)="limpia($event, 'limpia')"
+                class="btn btn-warning btn-sm btn-grp" title="Borrar filtros"><i class="fa fa-eraser"
+                  aria-hidden="true"></i> Limpiar</button>
+            </div>
+
+          </div>
+        </div>
+
+        <div *ngIf="ver_grafico" class="row">
+          <div class="col-md-6">
+            <div class="card bg-light">
+              <div class="form-row card-body">
+                <!--Filtro-->
+                <div class="form-group col-6">
+                  <label for="agrupamiento">Filtro por campo</label>
+                  <select [disabled]="!ver_grafico" (change)="filtrar($event)" class="form-control form-control-sm"
+                    id="agrupamiento" name="agrupamiento" [(ngModel)]="modelo.agrupamiento" #agrupamiento="ngModel"
+                    [ngClass]="{
+                                    'is-valid' : agrupamiento.touched && agrupamiento.valid, 
+                                    'is-invalid': agrupamiento.touched && agrupamiento.invalid}">
+                    <option *ngFor="let dimension of dimensiones_filtro; let i = index" value="{{dimension.valor}}">
+                      {{dimension.texto}}</option>
+                  </select>
+                  <div *ngIf="agrupamiento.invalid" class="invalid-feedback">
+                    <div *ngIf="agrupamiento.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+                <!--Valor Filtro-->
+                <div class="form-group col-6">
+                  <label for="filtro">Valor del filtro</label>
+                  <select [disabled]="!ver_filtro" (change)="dibujaGrafico($event, 'filtro')"
+                    class="form-control form-control-sm" id="filtro" name="filtro" [(ngModel)]="modelo.filtro"
+                    #filtro="ngModel" [ngClass]="{
+                                    'is-valid' : filtro.touched && filtro.valid, 
+                                    'is-invalid': filtro.touched && filtro.invalid}">
+                    <option *ngFor="let filtro of filtros; let i = index" value="{{filtro.filtro}}">
+                      {{filtro.filtro}}</option>
+                  </select>
+                  <div *ngIf="filtro.invalid" class="invalid-feedback">
+                    <div *ngIf="filtro.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card bg-light">
+              <div class="card-body form-row">
+                <div class="form-group col-6">
+                  <label for="fechas">Fecha de inicio</label>
+                  <div>
+                    <input type="date" class="form-control form-control-sm" id="fecha_i" name="fecha_i"
+                      [(ngModel)]="modelo.fecha_i" #fecha_i="ngModel" [ngClass]="{
+                                    'is-valid' : fecha_i.touched && fecha_i.valid, 
+                                    'is-invalid': fecha_i.touched && fecha_i.invalid}">
+                  </div>
+                </div>
+
+                <div class="form-group col-6">
+                  <label for="fechas">Fecha de fin</label>
+                  <div>
+                    <input type="date" class="form-control form-control-sm" id="fecha_f" name="fecha_f"
+                      [(ngModel)]="modelo.fecha_f" #fecha_f="ngModel" [ngClass]="{
+                                  'is-valid' : fecha_f.touched && fecha_f.valid, 
+                                  'is-invalid': fecha_f.touched && fecha_f.invalid}"
+                      (change)="filtraFecha($event, 'filtro_fecha')">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="grafico" style="max-width: 100%" [ngClass]="{
+          '' : tamano_pantalla > 991, 
+          'div-grafico': tamano_pantalla < 992}">
+          <canvas id="pie-chart" class="text-center"></canvas>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

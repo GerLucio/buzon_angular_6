@@ -1,0 +1,73 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-xl">
+      <div class="caja rounded">
+        <h3><b>Bienvenido</b></h3>
+
+        <form name="form" #f="ngForm">
+          <div class="form-row">
+            <!--Folio-->
+            <div class="form-group col-md">
+              <label for="nombre">Ingresa el folio de tu sugerencia para darle seguimiento</label>
+              <input type="text" class="form-control form-control-sm" id="folio" placeholder="Folio" name="folio"
+                [(ngModel)]="modelo.folio" #folio="ngModel" required maxlength="16" [ngClass]="{
+                      'is-valid' : folio.touched && folio.valid, 
+                      'is-invalid': folio.touched && folio.invalid}">
+              <div *ngIf="folio.invalid" class="invalid-feedback">
+                <div *ngIf="folio.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+          </div>
+          <!--Botones-->
+          <div class="form-group text-right">
+            <button *ngIf="folio.valid" type="submit" (click)="buscaFolio()"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Enviar</button>
+            <button *ngIf="folio.invalid" type="submit" class="btn btn-primary btn-sm btn-grp col-md-2"
+              disabled>Enviar</button>
+          </div>
+        </form>
+
+        <div *ngIf="historial_sugerencia">
+          <div class="page-header">
+            <h3>Seguimiento de sugerencia</h3>
+          </div>
+          <ul class="timeline">
+            <li *ngFor="let sugerencia of historial_sugerencia; let i = index" [ngClass]="{'timeline-inverted' : i%2}">
+              <div class="timeline-badge {{sugerencia.color}}"><i class="{{sugerencia.icono}}" aria-hidden="true"></i>
+              </div>
+              <div class="timeline-panel">
+                <div class="timeline-heading">
+                  <h4 class="timeline-title"><b>{{sugerencia.estado}}</b></h4>
+                  <p>
+                    <small class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                      {{sugerencia.fecha_estado}}
+                      <div *ngIf="sugerencia.responsable != 'Usuario'">
+                        por el <strong>{{sugerencia.responsable}}</strong>
+                      </div>
+                    </small>
+                  </p>
+                </div>
+                <div class="timeline-body">
+                  <p><small>{{sugerencia.comentario}}</small></p>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div *ngIf="sugerencia['estado']=='Atendida'" class="text-center">
+            <h4>¿Tu sugerencia fue atendida de manera satisfactoria?</h4>
+            <!--Botones-->
+            <div class="form-group">
+              <button type="button" (click)="termina()" class="btn btn-sm btn-grp col-md-2 btn-success">Sí</button>
+              <button type="button" (click)="canaliza()" class="btn btn-sm btn-grp col-md-2 btn-danger">No</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

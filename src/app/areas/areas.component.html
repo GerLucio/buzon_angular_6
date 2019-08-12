@@ -1,0 +1,162 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-lg">
+      <div class="caja-main rounded" [ngClass]="{
+        'div-completo' : tamano_pantalla > 991, 
+        '': tamano_pantalla < 992}">
+        <!--<div class="alert alert-info text-right" role="alert">
+          Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b> |
+          <a routerLink="/login" class="alert-link">Salir</a>
+        </div>-->
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b>!</h4>
+          Administración del catálogo de áreas de asignación
+        </div>
+        <div *ngIf="!ver_nuevo">
+          <div class="text-right">
+            <button type="submit" (click)="ver_nuevo = true;"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Nuevo</button>
+          </div>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros" placeholder="Filtro">
+          </div>
+          <div *ngIf="areas; else sin_registros" class="scroll sin-registros">
+            <table class="table table-striped table-bordered table-hover table-sm">
+              <thead class="thead-dark">
+                <th class="area">Área de asignación</th>
+                <th class="estado">Estado</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let area of areas| grdFilter: {area_asignacion: filtro}; let i = index">
+                  <td><a data-toggle="collapse" href="#collapse{{i}}" role="button" aria-expanded="false"
+                      attr.aria-controls="#collapse{{i}}">{{area.area_asignacion}} <i class="fa fa-caret-down"
+                        aria-hidden="true"></i></a>
+                    <div class="collapse" id="collapse{{i}}">
+                <tr>
+                  <td class="w-auto">Área de asignación</td>
+                  <td class="w-100">
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="edita(area, 'area_asignacion', 128)">{{area.area_asignacion}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="w-auto">Titular</td>
+                  <td class="w-100">
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="edita(area, 'titular_area', 128)">{{area.titular_area}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="w-auto">Correo</td>
+                  <td class="w-100">
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="edita(area, 'correo_area', 64)">{{area.correo_area}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="w-auto">Extensión</td>
+                  <td class="w-100">
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="edita(area, 'extension_area', 5)">{{area.extension_area}}</span>
+                  </td>
+                </tr>
+          </div>
+          </td>
+          <td>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="swith{{i}}" [(ngModel)]="area.estado_area"
+                (change)="cambiaEstado(area, $event)">
+              <label class="custom-control-label" for="swith{{i}}"></label>
+            </div>
+            <span *ngIf="area.estado_area; else desactivado">Activo</span>
+            <ng-template #desactivado><span>Desactivado</span></ng-template>
+          </td>
+          </tr>
+          </tbody>
+          </table>
+        </div>
+        <ng-template #sin_registros>
+          <div class="alert alert-danger sin-registros" role="alert">
+            No existen áreas de asignación registradas.
+          </div>
+        </ng-template>
+      </div>
+
+      <div *ngIf="ver_nuevo">
+        <p>Ingresa todos los datos de la nueva área de asignación.</p>
+        <form name="form" #f="ngForm">
+
+          <div class="form-row">
+            <!--Nombre del área-->
+            <div class="form-group col-md-6">
+              <label for="area">* Área de asignación</label>
+              <input type="text" class="form-control form-control-sm" id="area" placeholder="Área de asignación"
+                required name="area" [(ngModel)]="nueva_area.area" #area="ngModel" minlength="1" maxlength="128"
+                [ngClass]="{
+                    'is-valid' : area.touched && area.valid, 
+                    'is-invalid': area.touched && area.invalid}">
+              <div *ngIf="area.invalid" class="invalid-feedback">
+                <div *ngIf="area.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+
+            <!--titular del área-->
+            <div class="form-group col-md-6">
+              <label for="titular">* Titular del área de asignación</label>
+              <input type="text" class="form-control form-control-sm" id="titular"
+                placeholder="Titular del área de asignación" required name="titular" [(ngModel)]="nueva_area.titular"
+                #titular="ngModel" minlength="1" maxlength="128" [ngClass]="{
+                      'is-valid' : titular.touched && titular.valid, 
+                      'is-invalid': titular.touched && titular.invalid}">
+              <div *ngIf="titular.invalid" class="invalid-feedback">
+                <div *ngIf="titular.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!--Correo titular del área-->
+            <div class="form-group col-md-6">
+              <label for="correo">* Correo del titular</label>
+              <input type="text" class="form-control form-control-sm" id="correo" placeholder="Correo del titular"
+                required name="correo" [(ngModel)]="nueva_area.correo" #correo="ngModel" minlength="1" maxlength="64"
+                [ngClass]="{
+                      'is-valid' : correo.touched && correo.valid, 
+                      'is-invalid': correo.touched && correo.invalid}" email>
+              <div *ngIf="correo.invalid" class="invalid-feedback">
+                <div *ngIf="correo.errors.required">Campo obligatorio</div>
+                <div *ngIf="correo.errors.email">El correo no es válido</div>
+              </div>
+            </div>
+
+            <!--Extension del titular del área-->
+            <div class="form-group col-md-6">
+              <label for="extension">* Extensión del titular</label>
+              <input type="text" class="form-control form-control-sm" id="extension" placeholder="Extensión del titular"
+                required name="extension" [(ngModel)]="nueva_area.extension" #extension="ngModel" minlength="1"
+                maxlength="5" [ngClass]="{
+                        'is-valid' : extension.touched && extension.valid, 
+                        'is-invalid': extension.touched && extension.invalid}">
+              <div *ngIf="extension.invalid" class="invalid-feedback">
+                <div *ngIf="extension.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button *ngIf="area.valid && titular.valid && correo.valid && extension.valid" type="submit"
+              (click)="altaArea()" class="btn btn-primary btn-sm btn-grp col-md-2">Aceptar</button>
+            <button *ngIf="area.invalid || titular.invalid || correo.invalid || extension.invalid" type="submit"
+              class="btn btn-primary btn-sm btn-grp col-md-2 disabled">Aceptar</button>
+            <button type="submit" (click)="cancelaAlta()"
+              class="btn btn-danger btn-sm btn-grp col-md-2">Cancelar</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

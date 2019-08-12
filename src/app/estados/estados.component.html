@@ -1,0 +1,121 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-lg">
+      <div class="caja-main rounded" [ngClass]="{
+        'div-completo' : tamano_pantalla > 991, 
+        '': tamano_pantalla < 992}">
+        <!--<div class="alert alert-info text-right" role="alert">
+          Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b> |
+          <a routerLink="/login" class="alert-link">Salir</a>
+        </div>-->
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b>!</h4>
+          Administración del catálogo de estados
+        </div>
+        <div *ngIf="!ver_nuevo">
+          <div class="text-right">
+            <button type="submit" (click)="ver_nuevo = true;"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Nuevo</button>
+          </div>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros" placeholder="Filtro">
+          </div>
+          <div *ngIf="estados; else sin_registros" class="scroll sin-registros">
+            <table class="table table-striped table-bordered table-hover table-sm">
+              <thead class="thead-dark">
+                <th class="estado">Estado de sugerencia</th>
+                <th class="estado-estado">Estado</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let estado of estados| grdFilter: {estado: filtro}; let i = index">
+                  <td>
+                    <a data-toggle="collapse" href="#collapse{{i}}" role="button" aria-expanded="false"
+                      attr.aria-controls="#collapse{{i}}">{{estado.estado}} <i class="fa fa-caret-down"
+                        aria-hidden="true"></i></a>
+                    <div class="collapse" id="collapse{{i}}">
+                <tr>
+                  <td class="w-auto">Estado</td>
+                  <td class="w-100">
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="edita(estado, 'estado', 32)">{{estado.estado}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="w-auto">Descripción</td>
+                  <td class="w-100">
+                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="editar(estado, 'descripcion', 256)">{{estado.descripcion}}</span>
+                  </td>
+                </tr>
+          </div>
+          </td>
+          <td>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="swith{{i}}" [(ngModel)]="estado.estado_estado"
+                (change)="cambiaEstado(estado, $event)">
+              <label class="custom-control-label" for="swith{{i}}"></label>
+            </div>
+            <span *ngIf="estado.estado_estado; else desactivado">Activo</span>
+            <ng-template #desactivado><span>Desactivado</span></ng-template>
+          </td>
+
+          </tr>
+          </tbody>
+          </table>
+        </div>
+        <ng-template #sin_registros>
+          <div class="alert alert-danger sin-registros" role="alert">
+            No existen estados de sugerencia registrados.
+          </div>
+        </ng-template>
+      </div>
+
+      <div *ngIf="ver_nuevo">
+        <p>Ingresa todos los datos del nuevo estado de sugerencia.</p>
+        <form name="form" #f="ngForm">
+
+          <div class="form-row">
+            <!--Nombre del estado-->
+            <div class="form-group col-md-6">
+              <label for="estado">* Nombre del estado de sugerencia</label>
+              <input type="text" class="form-control form-control-sm" id="estado"
+                placeholder="Nombre del estado de sugerencia" required name="estado" [(ngModel)]="nuevo_estado.estado"
+                #estado="ngModel" minlength="1" maxlength="32" [ngClass]="{
+                    'is-valid' : estado.touched && estado.valid, 
+                    'is-invalid': estado.touched && estado.invalid}">
+              <div *ngIf="estado.invalid" class="invalid-feedback">
+                <div *ngIf="estado.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+
+            <!--Descripcion del estado-->
+            <div class="form-group col-md-6">
+                <label for="descripcion">* Descripción del estado de sugerencia</label>
+                <input type="text" class="form-control form-control-sm" id="descripcion"
+                  placeholder="Descripción del estado de sugerencia" required name="descripcion" [(ngModel)]="nuevo_estado.descripcion"
+                  #descripcion="ngModel" minlength="1" maxlength="256" [ngClass]="{
+                      'is-valid' : descripcion.touched && descripcion.valid, 
+                      'is-invalid': descripcion.touched && descripcion.invalid}">
+                <div *ngIf="descripcion.invalid" class="invalid-feedback">
+                  <div *ngIf="descripcion.errors.required">Campo obligatorio</div>
+                </div>
+              </div>
+          </div>
+
+          <div class="text-right">
+            <button *ngIf="estado.valid && descripcion.valid" type="submit" (click)="altaEstado()"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Aceptar</button>
+            <button *ngIf="estado.invalid || descripcion.invalid" type="submit"
+              class="btn btn-primary btn-sm btn-grp col-md-2 disabled">Aceptar</button>
+            <button type="submit" (click)="cancelaAlta()"
+              class="btn btn-danger btn-sm btn-grp col-md-2">Cancelar</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

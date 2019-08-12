@@ -1,0 +1,16 @@
+.frente{
+    position: fixed;
+    z-index: 999;
+}
+
+.fixed-top-2 {
+    margin-top: 56px;
+    position: fixed;
+    z-index: 998;
+}
+
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}

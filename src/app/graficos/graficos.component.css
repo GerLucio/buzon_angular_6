@@ -1,0 +1,31 @@
+.sin-registros{
+    margin: 15px 0 0 0;
+}
+
+.div-grafico{
+    min-height: 150%;
+}
+
+canvas{
+    margin: 0 auto;
+}
+
+.centro{
+    text-align: center;
+}
+
+.cont{
+    border: 1px solid grey;
+    border-radius: 5px;
+    
+}
+
+.card{
+    margin-bottom: 10px;
+}
+
+.card-body{
+    padding: 10px 10px 10px 10px;
+}
+
+/***/

@@ -1,0 +1,9 @@
+.login-caja {
+    background: #ffffff;
+    padding: 25px;
+}
+
+.container-fluid {
+    background-image: url('../../assets/img/back.jpg'); 
+    background-size: cover;
+}

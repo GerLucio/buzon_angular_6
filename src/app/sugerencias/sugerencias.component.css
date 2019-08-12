@@ -1,0 +1,14 @@
+hr{
+    border: 1px solid #000000;
+    margin: 10px 0 10px 0;
+}
+
+.caja{
+    min-height: 50rem;
+}
+
+.link{
+    text-decoration-line: underline;
+    color: #00569c;
+    cursor: pointer;
+}

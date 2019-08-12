@@ -1,0 +1,311 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-xl">
+      <div class="caja rounded animated zoomIn bg-light">
+        <h3><b>Bienvenido</b></h3>
+        <p>
+          <strong>La Unidad Politécnica para la Educación Virtual (UPEV)</strong> tiene como uno de sus objetivos
+          ofrecerte servicios con
+          la más alta calidad y calidez.
+          Te invitamos a que te sumes a este esfuerzo, haciéndonos saber tu felicitación, comentario, sugerencia y/o
+          queja, tanto de este sitio como
+          de los servicios que ofrece la Unidad.
+        </p>
+        <p>
+          La información aquí vertida es estrictamente confidencial y sólo será utilizada con el propósito de mejorar
+          nuestro servicio.
+        </p>
+        <hr>
+        <h5><b>Queremos saber tu opinión</b></h5>
+        <div class="alert alert-warning" role="alert">
+          Los campos marcados con <b>*</b> son obligatorios.
+        </div>
+        <form name="form" #f="ngForm">
+
+          <div class="form-row">
+
+            <!--Tipo de comentario-->
+            <div class="form-group col-md-6">
+              <label for="tipo">* Tipo de comentario</label>
+              <select class="form-control form-control-sm" id="tipo" required name="tipo" [(ngModel)]="modelo.tipo"
+                #tipo="ngModel" [ngClass]="{
+                'is-valid' : tipo.touched && tipo.valid, 
+                'is-invalid': tipo.touched && tipo.invalid}">
+                <option *ngFor="let tipo_sugerencia of tipos_sugerencia; let i = index"
+                  value="{{tipo_sugerencia.id_tipo}}">{{tipo_sugerencia.tipo_sugerencia}}</option>
+              </select>
+              <div *ngIf="tipo.invalid" class="invalid-feedback">
+                <div *ngIf="tipo.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+
+            <!--Usuario interno o externo-->
+            <div class="form-group col-md-6">
+              <label for="usuario">* Tipo de usuario</label>
+              <select class="form-control form-control-sm" (change)="captcha_valido = false" id="usuario" name="usuario"
+                [(ngModel)]="modelo.usuario" #usuario="ngModel" required [ngClass]="{
+                    'is-valid' : usuario.touched && usuario.valid, 
+                    'is-invalid': usuario.touched && usuario.invalid}">
+                <option *ngFor="let tipo_usuario of tipos_usuario; let i = index"
+                  value="{{tipo_usuario.id_tipo_usuario}}">{{tipo_usuario.tipo_usuario}}</option>
+              </select>
+              <div *ngIf="usuario.invalid" class="invalid-feedback">
+                <div *ngIf="usuario.errors.required">Campo obligatorio</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="modelo.usuario==1">
+            <!--Comentario-->
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="sugerencia">* Describe la situación</label>
+                <textarea class="form-control" name="sugerencia" id="sugerencia" [(ngModel)]="modelo.sugerencia"
+                  #sugerencia="ngModel" rows="2" required [ngClass]="{
+                    'is-valid' : sugerencia.touched && sugerencia.valid, 
+                    'is-invalid': sugerencia.touched && sugerencia.invalid}" maxlength="2048"></textarea>
+                <div *ngIf="sugerencia.invalid" class="invalid-feedback">
+                  <div *ngIf="sugerencia.errors.required">Campo obligatorio</div>
+                </div>
+              </div>
+
+              <!--Propuesta de solución-->
+              <div class="form-group col-md-6">
+                <label for="propuesta">Escribe alguna propuesta de solución</label>
+                <textarea class="form-control" id="propuesta" name="propuesta" [(ngModel)]="modelo.propuesta"
+                  #propuesta="ngModel" rows="2" maxlength="2048" [ngClass]="{
+                    'is-valid' : propuesta.touched && propuesta.valid, 
+                    'is-invalid': propuesta.touched && propuesta.invalid}"></textarea>
+              </div>
+            </div>
+
+            <div class="form-row">
+
+              <!--Archivo-->
+              <div class="form-group col-md-12">
+                <label for="usuario">Adjunta un archivo</label>
+                <div class="custom-file">
+                  <div class="form-control" style="cursor: pointer;" (click)="selecciona()">
+                    <label *ngIf="archivo" style="cursor: pointer;">{{archivo.name}}</label>
+                    <label *ngIf="!archivo" style="cursor: pointer;">Selecciona un archivo PDF o
+                      Imagen</label>
+                  </div>
+                </div>
+                <input type="file" style="display:none" class="custom-file-input" id="inputArchivo" name="inputArchivo"
+                  #inputArchivo (change)="onFileSelected($event)" accept=".jpg,.png,.pdf">
+              </div>
+              <div *ngIf="archivo" class="form-group col-md-12">
+                <span>{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
+                <i (click)="resetInputFile()" class="fa fa-times" aria-hidden="true"></i>
+              </div>
+
+            </div>
+            <re-captcha (resolved)="resolved($event)" siteKey="6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X"></re-captcha>
+            <div class="text-right">
+              <button *ngIf="tipo.valid && usuario.valid && sugerencia.valid && propuesta.valid && captcha_valido"
+                type="submit" (click)="enviarSugerencia()"
+                class="btn btn-primary btn-sm btn-grp col-md-2">Enviar</button>
+              <button
+                *ngIf="tipo.invalid || usuario.invalid || sugerencia.invalid || propuesta.invalid || (!captcha_valido)"
+                type="submit" class="btn btn-primary btn-sm btn-grp col-md-2" disabled>Enviar</button>
+            </div>
+
+          </div>
+
+          <div *ngIf="modelo.usuario==2">
+
+            <div class="form-row">
+
+              <!--Relación instituto-->
+              <div class="form-group col-md-4">
+                <label for="relacion">* Relación con el Instituto</label>
+                <select class="form-control form-control-sm" id="relacion" required name="relacion"
+                  [(ngModel)]="modelo.relacion" #relacion="ngModel" [ngClass]="{
+                                'is-valid' : relacion.touched && relacion.valid, 
+                                'is-invalid': relacion.touched && relacion.invalid}">
+                  <option *ngFor="let relacion of relaciones; let i = index" value="{{relacion.id_relacion}}">
+                    {{relacion.relacion_instituto}}</option>
+                </select>
+                <div *ngIf="relacion.invalid" class="invalid-feedback">
+                  <div *ngIf="relacion.errors.required">Campo obligatorio</div>
+                </div>
+              </div>
+
+              <!--Nivel Educativo-->
+              <div class="form-group col-md-4">
+                <label for="nivel">* Nivel Educativo</label>
+                <select (change)="filtraUnidad($event)" class="form-control form-control-sm" id="nivel" required
+                  name="nivel" [(ngModel)]="modelo.nivel" #nivel="ngModel" [ngClass]="{
+                                'is-valid' : nivel.touched && nivel.valid, 
+                                'is-invalid': nivel.touched && nivel.invalid}">
+                  <option *ngFor="let nivel_educativo of niveles_educativos; let i = index"
+                    value="{{nivel_educativo.id_nivel}}">
+                    {{nivel_educativo.nivel_educativo}}</option>
+                </select>
+                <div *ngIf="nivel.invalid" class="invalid-feedback">
+                  <div *ngIf="nivel.errors.required">Campo obligatorio</div>
+                </div>
+              </div>
+
+              <!--Unidad Académica-->
+              <div class="form-group col-md-4">
+                <label for="unidad">* U. Académica o Dependencia</label>
+                <select [disabled]="!nivel_seleccion" class="form-control form-control-sm" id="unidad" required
+                  name="unidad" [(ngModel)]="modelo.unidad" #unidad="ngModel" [ngClass]="{
+                                  'is-valid' : unidad.touched && unidad.valid, 
+                                  'is-invalid': unidad.touched && unidad.invalid}">
+                  <option *ngFor="let unidad_academica of unidades_academicas_filtro; let i = index"
+                    value="{{unidad_academica.id_unidad}}">
+                    {{unidad_academica.unidad_academica}}</option>
+                </select>
+                <div *ngIf="unidad.invalid" class="invalid-feedback">
+                  <div *ngIf="unidad.errors.required">Campo obligatorio</div>
+                </div>
+              </div>
+
+            </div>
+
+            <!--Comentario-->
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="sugerencia">* Describe la situación</label>
+                <textarea class="form-control" name="sugerencia" id="sugerencia" [(ngModel)]="modelo.sugerencia"
+                  #sugerencia="ngModel" rows="2" required [ngClass]="{
+                    'is-valid' : sugerencia.touched && sugerencia.valid, 
+                    'is-invalid': sugerencia.touched && sugerencia.invalid}" maxlength="2048"></textarea>
+                <div *ngIf="sugerencia.invalid" class="invalid-feedback">
+                  <div *ngIf="sugerencia.errors.required">Campo obligatorio</div>
+                </div>
+              </div>
+
+              <!--Propuesta de solución-->
+              <div class="form-group col-md-6">
+                <label for="propuesta">Escribe alguna propuesta de solución</label>
+                <textarea class="form-control" id="propuesta" name="propuesta" [(ngModel)]="modelo.propuesta"
+                  #propuesta="ngModel" rows="2" maxlength="2048" [ngClass]="{
+                    'is-valid' : propuesta.touched && propuesta.valid, 
+                    'is-invalid': propuesta.touched && propuesta.invalid}"></textarea>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!--Archivo-->
+              <div class="form-group col-md-12">
+                <label for="usuario">Adjunta un archivo</label>
+                <div class="custom-file">
+                  <div class="form-control" style="cursor: pointer;" (click)="selecciona()">
+                    <label *ngIf="archivo" style="cursor: pointer;">{{archivo.name}}</label>
+                    <label *ngIf="!archivo" style="cursor: pointer;">Selecciona un archivo PDF o
+                      Imagen</label>
+                  </div>
+                </div>
+                <input type="file" style="display:none" class="custom-file-input" id="inputArchivo" name="inputArchivo"
+                  #inputArchivo (change)="onFileSelected($event)" accept=".jpg,.png,.pdf">
+              </div>
+              <div *ngIf="archivo" class="form-group col-md-12">
+                <span>{{ archivo.size/1024 | number: '1.0-2' }} KB</span>
+                <i (click)="resetInputFile()" class="fa fa-times" aria-hidden="true"></i>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="datos_personales" name="datos_personales"
+                  class="custom-control-input" id="datos_personales">
+                <label class="custom-control-label" for="datos_personales">
+                  <b>¿Deseas mantenerte informado respecto al estado de tu opinión y/o sugerencia?</b>
+                </label>
+              </div>
+            </div>
+
+            <div *ngIf="datos_personales">
+              <div class="form-row">
+                <!--Nombre-->
+                <div class="form-group col-md-4">
+                  <label for="nombre">Nombre (s)</label>
+                  <input type="text" class="form-control form-control-sm" id="nombre" placeholder="Nombre (s)"
+                    name="nombre" [(ngModel)]="modelo.nombre" #nombre="ngModel" maxlength="32" [ngClass]="{
+                        'is-valid' : nombre.touched && nombre.valid, 
+                        'is-invalid': nombre.touched && nombre.invalid}">
+                  <div *ngIf="nombre.invalid" class="invalid-feedback">
+                    <div *ngIf="nombre.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+                <!--Apellido paterno-->
+                <div class="form-group col-md-4">
+                  <label for="apellidop">Apellido Paterno</label>
+                  <input type="text" class="form-control form-control-sm" id="apellidop" name="apellidop"
+                    [(ngModel)]="modelo.apellidop" #apellidop="ngModel" placeholder="Apellido Paterno" maxlength="16"
+                    [ngClass]="{
+                          'is-valid' : apellidop.touched && apellidop.valid, 
+                          'is-invalid': apellidop.touched && apellidop.invalid}">
+                  <div *ngIf="apellidop.invalid" class="invalid-feedback">
+                    <div *ngIf="apellidop.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+                <!--Apellido materno-->
+                <div class="form-group col-md-4">
+                  <label for="apellidom">Apellido Materno</label>
+                  <input type="text" class="form-control form-control-sm" id="apellidom" name="apellidom"
+                    [(ngModel)]="modelo.apellidom" #apellidom="ngModel" placeholder="Apellido Materno" maxlength="16"
+                    [ngClass]="{
+                          'is-valid' : apellidom.touched && apellidom.valid, 
+                          'is-invalid': apellidom.touched && apellidom.invalid}">
+                  <div *ngIf="apellidom.invalid" class="invalid-feedback">
+                    <div *ngIf="apellidom.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="form-row">
+
+                <!--Correo-->
+                <div class="form-group col-md-4">
+                  <label for="correo">Correo</label>
+                  <input type="text" class="form-control form-control-sm" id="correo" placeholder="Correo" name="correo"
+                    [(ngModel)]="modelo.correo" #correo="ngModel" maxlength="32" [ngClass]="{
+                          'is-valid' : correo.touched && correo.valid, 
+                          'is-invalid': correo.touched && correo.invalid}" email>
+                  <div *ngIf="correo.invalid" class="invalid-feedback">
+                    <div *ngIf="correo.errors.required">Campo obligatorio</div>
+                    <div *ngIf="correo.errors.email">El correo no es válido</div>
+                  </div>
+                </div>
+
+                <!--Teléfono-->
+                <div class="form-group col-md-4">
+                  <label for="telefono">Teléfono</label>
+                  <input type="text" class="form-control form-control-sm" id="telefono" placeholder="Teléfono"
+                    name="telefono" [(ngModel)]="modelo.telefono" #telefono="ngModel" maxlength="32" [ngClass]="{
+                          'is-valid' : telefono.touched && telefono.valid, 
+                          'is-invalid': telefono.touched && telefono.invalid}">
+                  <div *ngIf="telefono.invalid" class="invalid-feedback">
+                    <div *ngIf="telefono.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <re-captcha (resolved)="resolved($event)" siteKey="6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X"></re-captcha>
+            <div class="text-right">
+              <button
+                *ngIf="tipo.valid && usuario.valid && relacion.valid && nivel.valid && unidad.valid && sugerencia.valid && propuesta.valid && captcha_valido"
+                type="submit" (click)="enviarSugerencia()"
+                class="btn btn-primary btn-sm btn-grp col-md-2">Enviar</button>
+              <button
+                *ngIf="tipo.invalid || usuario.invalid  || relacion.invalid || nivel.invalid || unidad.invalid || sugerencia.invalid || propuesta.invalid || (!captcha_valido)"
+                type="submit" class="btn btn-primary btn-sm btn-grp col-md-2" disabled>Enviar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

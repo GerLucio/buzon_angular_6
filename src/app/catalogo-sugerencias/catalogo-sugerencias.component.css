@@ -1,0 +1,15 @@
+.sin-registros{
+    margin: 15px 0 0 0;
+}
+
+table{
+    width: 100%;
+    table-layout: fixed;
+}
+.tipos-sugerencia{
+    width: 74%;
+}
+
+.estado-tipos-sugerencia{
+    width: 26%;
+}
