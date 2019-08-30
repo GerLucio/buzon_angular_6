@@ -1,19 +1,23 @@
 @font-face {
-    font-family: 'Merriweather', serif;
-    src: url(assets/fonts/Merriweather-Bold.ttf) format("opentype");
+    font-family: PT Sans;
+    src: url(assets/fonts/PT_Sans-Web-Regular.ttf) format("opentype");
 }
 
 @font-face {
-    font-family: 'PT Sans', sans-serif;
-    src: url(assets/fonts/PT_Sans-Web-Regular.ttf) format("opentype");
+  font-family: Poppins;
+  src: url(assets/fonts/Poppins-Medium.ttf) format("opentype");
 }
 
 body {
     padding-top: 105px;
-    background-color: #00569c;
+    /*background-color: #00569c;*/
+    background-image: url(assets/img/img4.png); 
     background-size: cover;
     font-family: 'PT Sans', sans-serif;
-    
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Poppins', sans-serif;
 }
 
 .caja {
@@ -21,6 +25,7 @@ body {
     padding: 10px;
     margin: 10px 0 10px 0;
 }
+
 
 .caja-side {
     background: #ffffff;

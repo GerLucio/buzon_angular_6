@@ -27,6 +27,7 @@ import { AdminSugerenciasComponent } from './admin-sugerencias/admin-sugerencias
 import { RecaptchaModule } from 'ng-recaptcha';
 import { SeguimientoComponent } from './seguimiento/seguimiento.component';
 import { DireccionComponent } from './direccion/direccion.component';
+import { RestableceComponent } from './restablece/restablece.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { DireccionComponent } from './direccion/direccion.component';
     TipoUsuarioComponent,
     AdminSugerenciasComponent,
     SeguimientoComponent,
-    DireccionComponent
+    DireccionComponent,
+    RestableceComponent
   ],
   imports: [
     BrowserModule,

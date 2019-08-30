@@ -17,12 +17,18 @@ import { TipoUsuarioComponent } from './tipo-usuario/tipo-usuario.component';
 import { AdminSugerenciasComponent } from './admin-sugerencias/admin-sugerencias.component';
 import { SeguimientoComponent } from './seguimiento/seguimiento.component';
 import { DireccionComponent } from './direccion/direccion.component';
+import { RestableceComponent } from './restablece/restablece.component';
 
 const routes: Routes = [
   {
     path: 'sugerencias',
     component: SugerenciasComponent,
     data: { title: 'Sugerencias' }
+  },
+  {
+    path: 'restablece',
+    component: RestableceComponent,
+    data: { title: 'Restablece' }
   },
   {
     path: 'seguimiento',

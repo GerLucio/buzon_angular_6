@@ -70,7 +70,7 @@
               </div>
 
             <!--Área de asignación-->
-            <div class="form-group col-lg-2 col-md-3">
+            <div *ngIf="estado_actual.estado != 'Recibida'" class="form-group col-lg-2 col-md-3">
               <select class="form-control form-control-sm" id="area" name="area" [(ngModel)]="modelo.area"
               (change)="verTabla(estado_actual)"
                 #area="ngModel" [ngClass]="{

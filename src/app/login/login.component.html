@@ -5,8 +5,10 @@
     <div class="col-lg-4 col-md-6" [ngClass]="{
       'align-self-center' : tamano_pantalla > 767, 
       '': tamano_pantalla < 768}">
-      <div class="login-caja rounded shadow-lg">
-        <h2>Inicio de sesión</h2>
+
+      <!--Login-->
+      <div *ngIf="!miss_password" class="login-caja rounded shadow-lg">
+        <h2 class="text-center">Inicio de sesión</h2>
         <form name="form" #f="ngForm" novalidate>
           <div class="form-group">
             <label for="correo">Correo</label>
@@ -38,11 +40,43 @@
             </div>
           </div>
           <div class="form-group">
-            <button *ngIf="correo.valid && password.valid" (click)="login()" class="btn btn-primary col-md-12">Ingresar</button>
-            <button *ngIf="correo.invalid || password.invalid" disabled class="btn btn-primary col-md-12">Ingresar</button>
+            <button *ngIf="correo.valid && password.valid" (click)="login()"
+              class="btn btn-primary col-md-12">Ingresar</button>
+            <button *ngIf="correo.invalid || password.invalid" disabled
+              class="btn btn-primary col-md-12">Ingresar</button>
           </div>
         </form>
+        <div class="text-center">
+          <span class="editable" (click)="miss_password = true">¿Olvidaste tu contraseña?</span>
+        </div>
       </div>
+
+      <!--Recuperar contraseña-->
+      <div *ngIf="miss_password" class="login-caja rounded shadow-lg">
+        <h3 class="text-center">Restablece tu contraseña</h3>
+        <p>Ingresa tu correo electrónico y te enviaremos un enlace para que restablezcas tu contraseña.</p>
+
+        <form name="form_pass" #form_pass="ngForm" novalidate>
+          <div class="form-group">
+            <input type="text" name="miss_correo" class="form-control" id="miss_correo" placeholder="Ingresa tu correo"
+              required [(ngModel)]="miss_correo" #miss_correo_t="ngModel" [ngClass]="{
+                      'is-valid' : miss_correo_t.touched && miss_correo_t.valid, 
+                      'is-invalid': miss_correo_t.touched && miss_correo_t.invalid}" email>
+            <div *ngIf="miss_correo_t.invalid" class="invalid-feedback">
+              <div *ngIf="miss_correo_t.errors.required">El correo es obligatorio</div>
+              <div *ngIf="miss_correo_t.errors.email">El correo no es válido</div>
+            </div>
+          </div>
+        </form>
+
+        <button *ngIf="miss_correo_t.valid" type="submit" (click)="cambiaPassword()"
+          class="btn btn-primary btn-sm btn-grp col-md-6">Aceptar</button>
+        <button *ngIf="miss_correo_t.invalid" type="submit"
+          class="btn btn-primary btn-sm btn-grp col-md-6 disabled">Aceptar</button>
+        <button type="submit" (click)="cancelaCambiaPass()"
+          class="btn btn-danger btn-sm btn-grp col-md-6">Cancelar</button>
+      </div>
+
     </div>
     <div class="col-lg-4 col-md-3">
     </div>

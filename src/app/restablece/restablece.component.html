@@ -1,0 +1,98 @@
+<div class="container main">
+  <div class="row">
+
+    <div class="col-lg">
+      <div class="caja-main rounded" [ngClass]="{
+          'div-completo' : tamano_pantalla > 991, 
+          '': tamano_pantalla < 992}">
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Bienvenido!</h4>
+          Restablece tu contraseña
+        </div>
+
+        <div *ngIf="!token">
+          <div class="alert alert-danger" role="alert">
+            Enlace inválido.
+          </div>
+        </div>
+        
+        <div *ngIf="token">
+          <div class="alert alert-warning" role="alert">
+            <p>Tu nueva contraseña debe tener:</p>
+            <ul>
+              <li>Mínimo 8 caracteres.</li>
+              <li>Máximo 16 caracteres.</li>
+              <li>Al menos 1 letra mayúscula.</li>
+              <li>Al menos 1 número.</li>
+            </ul>
+          </div>
+
+          <form name="form" #f="ngForm">
+
+            <div class="form-row">
+
+              <!--Nueva contraseña-->
+              <div class="form-group col-md-6">
+                <label for="nuevo_pass1">* Nueva contraseña</label>
+                <div class="input-group mb-3">
+                  <input [type]="ver_password1 ? 'text' : 'password'" class="form-control form-control-sm"
+                    id="nuevo_pass1" placeholder="Nueva contraseña" required name="nuevo_pass1"
+                    [(ngModel)]="contrasenas.nuevo_pass1" #nuevo_pass1="ngModel" minlength="8" maxlength="16" [ngClass]="{
+                      'is-valid' : nuevo_pass1.touched && nuevo_pass1.valid, 
+                      'is-invalid': nuevo_pass1.touched && nuevo_pass1.invalid}">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" id="boton-ver1"
+                      (click)="verPassword1()"><span
+                        [class]="ver_password1 ? 'fa fa-eye-slash' : 'fa fa-eye'"></span></button>
+                  </div>
+                  <div *ngIf="nuevo_pass1.invalid" class="invalid-feedback">
+                    <div *ngIf="nuevo_pass1.errors.required">Campo obligatorio</div>
+                    <div *ngIf="nuevo_pass1.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!--Nueva contraseña2-->
+              <div class="form-group col-md-6">
+                <label for="nuevo_pass2">* Confirma nueva contraseña</label>
+                <div class="input-group mb-3">
+                  <input [type]="ver_password2 ? 'text' : 'password'" class="form-control form-control-sm"
+                    id="nuevo_pass2" placeholder="Confirma nueva contraseña" required name="nuevo_pass2"
+                    [(ngModel)]="contrasenas.nuevo_pass2" #nuevo_pass2="ngModel" minlength="8" maxlength="16" [ngClass]="{
+                        'is-valid' : nuevo_pass2.touched && nuevo_pass2.valid, 
+                        'is-invalid': nuevo_pass2.touched && nuevo_pass2.invalid}">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" id="boton-ver2"
+                      (click)="verPassword2()"><span
+                        [class]="ver_password2 ? 'fa fa-eye-slash' : 'fa fa-eye'"></span></button>
+                  </div>
+                  <div *ngIf="nuevo_pass2.invalid" class="invalid-feedback">
+                    <div *ngIf="nuevo_pass2.errors.required">Campo obligatorio</div>
+                    <div *ngIf="nuevo_pass2.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="text-right">
+              <span *ngIf="contrasenas.nuevo_pass1 != contrasenas.nuevo_pass2" class="text-danger">
+                La nueva contraseña no coincide
+              </span>
+              <button
+                *ngIf="nuevo_pass1.valid && nuevo_pass2.valid && (contrasenas.nuevo_pass1 == contrasenas.nuevo_pass2)"
+                type="submit" (click)="cambiaPassword()"
+                class="btn btn-primary btn-sm btn-grp col-md-2">Aceptar</button>
+              <button
+                *ngIf="nuevo_pass1.invalid || nuevo_pass2.invalid || (contrasenas.nuevo_pass1 != contrasenas.nuevo_pass2)"
+                type="submit" class="btn btn-primary btn-sm btn-grp col-md-2 disabled">Aceptar</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

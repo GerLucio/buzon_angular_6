@@ -21,6 +21,10 @@ export class AdminUsuarioComponent implements OnInit {
   contrasenas: any = {};
   tamano_pantalla: any;
 
+  ver_password: boolean;
+  ver_password1: boolean;
+  ver_password2: boolean;
+
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -30,6 +34,9 @@ export class AdminUsuarioComponent implements OnInit {
     this.obtenUsuario();
     this.ver_cambia_pass = false;
     this.tamano_pantalla = window.innerWidth;
+    this.ver_password = false;
+    this.ver_password1 = false;
+    this.ver_password2 = false;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -42,9 +49,9 @@ export class AdminUsuarioComponent implements OnInit {
     this.autenticado = JSON.parse(localStorage.getItem('autenticado'));
     if (this.autenticado) {
       user = JSON.parse(localStorage.getItem('usuario'));
-      if(user.rol != 'admin'){
+      /*if(user.rol != 'admin'){
         this.router.navigate(['/sugerencias']);
-      }
+      }*/
       this.usuario_actual.rol = user.rol;
       this.usuario_actual.id_usuario = user.id_usuario;
       this.usuario_actual.nombre = user.nombre;
@@ -56,7 +63,7 @@ export class AdminUsuarioComponent implements OnInit {
 
   obtenUsuario() {
     this.http.post(this.servidor.ip + '/buzon_backend/obtenUsuario.php', JSON.stringify({
-      tkn: this.token
+      tkn: this.token, usuario: this.usuario_actual
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -78,10 +85,13 @@ export class AdminUsuarioComponent implements OnInit {
         }
         else {
           res = res[0];
+          if(res['rol']=='admin'){
+            this.usuario.nombre = res['nombre'];
+            this.usuario.apellidos = res['apellidos'];
+            this.usuario.correo = res['correo'];
+          }
           this.usuario.id_usuario = res['id_usuario'];
-          this.usuario.nombre = res['nombre'];
-          this.usuario.apellidos = res['apellidos'];
-          this.usuario.correo = res['correo'];
+          this.usuario.rol = res['rol'];
         }
       });
   }
@@ -220,6 +230,27 @@ export class AdminUsuarioComponent implements OnInit {
           this.cancelaCambiaPass();
         }
       });
+  }
+
+  verPassword() {
+    if (this.ver_password)
+      this.ver_password = false;
+    else
+      this.ver_password = true;
+  }
+
+  verPassword1() {
+    if (this.ver_password1)
+      this.ver_password1 = false;
+    else
+      this.ver_password1 = true;
+  }
+
+  verPassword2() {
+    if (this.ver_password2)
+      this.ver_password2 = false;
+    else
+      this.ver_password2 = true;
   }
 
 }

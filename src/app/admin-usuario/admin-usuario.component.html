@@ -11,30 +11,30 @@
         </div>-->
         <div class="alert alert-success" role="alert">
           <h4 class="alert-heading">¡Bienvenido <b>{{usuario_actual.nombre}} {{usuario_actual.apellidos}}</b>!</h4>
-          Administración del usuario de administrador del sistema
+          Administración de cuenta de usuario
         </div>
         <div *ngIf="!ver_cambia_pass">
-          <p>Aquí podrás editar los datos de tu cuenta de administrador del sistema.</p>
+          <p>Aquí podrás editar los datos de tu cuenta.</p>
           <table class="table table-striped table-bordered table-hover table-sm">
             <thead class="thead-dark">
-              <th colspan="2">Administrador del sistema</th>
+              <th colspan="2">Usuario</th>
             </thead>
             <tbody>
-              <tr>
+              <tr *ngIf="usuario.nombre">
                 <th>Nombre</th>
                 <td>
                   <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
                     (click)="edita(usuario, 'nombre', 32)">{{usuario.nombre}}</span>
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="usuario.apellidos">
                 <th>Apellidos</th>
                 <td>
                   <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
                     (click)="edita(usuario, 'apellidos', 32)">{{usuario.apellidos}}</span>
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="usuario.correo">
                 <th>Correo</th>
                 <td>
                   <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
@@ -68,43 +68,67 @@
               <!--Contraseña actual-->
               <div class="form-group col-md-4">
                 <label for="pass_actual">* Contraseña actual</label>
-                <input type="password" class="form-control form-control-sm" id="pass_actual"
-                  placeholder="Contraseña actual" required name="pass_actual" [(ngModel)]="contrasenas.pass_actual"
-                  #pass_actual="ngModel" minlength="8" maxlength="16" [ngClass]="{
+                <div class="input-group mb-3">
+                  <input [type]="ver_password ? 'text' : 'password'" class="form-control form-control-sm"
+                    id="pass_actual" placeholder="Contraseña actual" required name="pass_actual"
+                    [(ngModel)]="contrasenas.pass_actual" #pass_actual="ngModel" minlength="8" maxlength="16" [ngClass]="{
                     'is-valid' : pass_actual.touched && pass_actual.valid, 
                     'is-invalid': pass_actual.touched && pass_actual.invalid}">
-                <div *ngIf="pass_actual.invalid" class="invalid-feedback">
-                  <div *ngIf="pass_actual.errors.required">Campo obligatorio</div>
-                  <div *ngIf="pass_actual.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" id="boton-ver"
+                      (click)="verPassword()"><span
+                        [class]="ver_password ? 'fa fa-eye-slash' : 'fa fa-eye'"></span></button>
+                  </div>
+                  <div *ngIf="pass_actual.invalid" class="invalid-feedback">
+                    <div *ngIf="pass_actual.errors.required">Campo obligatorio</div>
+                    <div *ngIf="pass_actual.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  </div>
                 </div>
+
               </div>
 
               <!--Nueva contraseña-->
               <div class="form-group col-md-4">
                 <label for="nuevo_pass1">* Nueva contraseña</label>
-                <input type="password" class="form-control form-control-sm" id="nuevo_pass1"
-                  placeholder="Nueva contraseña" required name="nuevo_pass1" [(ngModel)]="contrasenas.nuevo_pass1"
-                  #nuevo_pass1="ngModel" minlength="8" maxlength="16" [ngClass]="{
+                <div class="input-group mb-3">
+                  <input [type]="ver_password1 ? 'text' : 'password'" class="form-control form-control-sm"
+                    id="nuevo_pass1" placeholder="Nueva contraseña" required name="nuevo_pass1"
+                    [(ngModel)]="contrasenas.nuevo_pass1" #nuevo_pass1="ngModel" minlength="8" maxlength="16" [ngClass]="{
                       'is-valid' : nuevo_pass1.touched && nuevo_pass1.valid, 
                       'is-invalid': nuevo_pass1.touched && nuevo_pass1.invalid}">
-                <div *ngIf="nuevo_pass1.invalid" class="invalid-feedback">
-                  <div *ngIf="nuevo_pass1.errors.required">Campo obligatorio</div>
-                  <div *ngIf="nuevo_pass1.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" id="boton-ver1"
+                      (click)="verPassword1()"><span
+                        [class]="ver_password1 ? 'fa fa-eye-slash' : 'fa fa-eye'"></span></button>
+                  </div>
+                  <div *ngIf="nuevo_pass1.invalid" class="invalid-feedback">
+                    <div *ngIf="nuevo_pass1.errors.required">Campo obligatorio</div>
+                    <div *ngIf="nuevo_pass1.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  </div>
                 </div>
+
               </div>
 
               <!--Nueva contraseña2-->
               <div class="form-group col-md-4">
                 <label for="nuevo_pass2">* Confirma nueva contraseña</label>
-                <input type="password" class="form-control form-control-sm" id="nuevo_pass2"
-                  placeholder="Confirma nueva contraseña" required name="nuevo_pass2"
-                  [(ngModel)]="contrasenas.nuevo_pass2" #nuevo_pass2="ngModel" minlength="8" maxlength="16" [ngClass]="{
+                <div class="input-group mb-3">
+                  <input [type]="ver_password2 ? 'text' : 'password'" class="form-control form-control-sm"
+                    id="nuevo_pass2" placeholder="Confirma nueva contraseña" required name="nuevo_pass2"
+                    [(ngModel)]="contrasenas.nuevo_pass2" #nuevo_pass2="ngModel" minlength="8" maxlength="16" [ngClass]="{
                         'is-valid' : nuevo_pass2.touched && nuevo_pass2.valid, 
                         'is-invalid': nuevo_pass2.touched && nuevo_pass2.invalid}">
-                <div *ngIf="nuevo_pass2.invalid" class="invalid-feedback">
-                  <div *ngIf="nuevo_pass2.errors.required">Campo obligatorio</div>
-                  <div *ngIf="nuevo_pass2.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" id="boton-ver2"
+                      (click)="verPassword2()"><span
+                        [class]="ver_password2 ? 'fa fa-eye-slash' : 'fa fa-eye'"></span></button>
+                  </div>
+                  <div *ngIf="nuevo_pass2.invalid" class="invalid-feedback">
+                    <div *ngIf="nuevo_pass2.errors.required">Campo obligatorio</div>
+                    <div *ngIf="nuevo_pass2.errors.minlength">La contraseña debe tener al menos 8 caracteres</div>
+                  </div>
                 </div>
+
               </div>
 
             </div>
