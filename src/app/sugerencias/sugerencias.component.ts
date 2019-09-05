@@ -23,6 +23,9 @@ export class SugerenciasComponent implements OnInit {
   datos_personales: boolean;
   token: string;
   captcha_valido: boolean;
+  envia: boolean = false;
+  grecaptcha: any;
+  key : string = "6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X";
 
   @ViewChild('inputArchivo')
   inputArchivo: ElementRef;
@@ -38,7 +41,8 @@ export class SugerenciasComponent implements OnInit {
     this.obtenRelaciones();
     this.obtenNivelesEducativos();
     this.obtenUnidades();
-    this.muestraFlotante();    
+    this.muestraFlotante();
+    window['getResponceCapcha'] = this.getResponceCapcha.bind(this);
   }
 
   ngOnDestroy() {
@@ -60,7 +64,7 @@ export class SugerenciasComponent implements OnInit {
     Toast.close();
   }
 
-  muestraFlotante(){
+  muestraFlotante() {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom-end',
@@ -94,7 +98,7 @@ export class SugerenciasComponent implements OnInit {
         text: 'El tamaño máximo de archivo son 5MB',
         timer: 5000
       });
-      setTimeout(() => { this.muestraFlotante();  }, 5001);
+      setTimeout(() => { this.muestraFlotante(); }, 5001);
     }
   }
 
@@ -114,7 +118,7 @@ export class SugerenciasComponent implements OnInit {
             text: res['Error'],
             timer: 5000
           });
-          setTimeout(() => { this.muestraFlotante();  }, 5001);
+          setTimeout(() => { this.muestraFlotante(); }, 5001);
         }
         else if (res['ErrorToken']) {
           Swal.fire({
@@ -148,7 +152,7 @@ export class SugerenciasComponent implements OnInit {
             text: res['Error'],
             timer: 5000
           });
-          setTimeout(() => { this.muestraFlotante();  }, 5001);
+          setTimeout(() => { this.muestraFlotante(); }, 5001);
         }
         else if (res['ErrorToken']) {
           Swal.fire({
@@ -182,7 +186,7 @@ export class SugerenciasComponent implements OnInit {
             text: res['Error'],
             timer: 5000
           });
-          setTimeout(() => { this.muestraFlotante();  }, 5001);
+          setTimeout(() => { this.muestraFlotante(); }, 5001);
         }
         else if (res['ErrorToken']) {
           Swal.fire({
@@ -216,7 +220,7 @@ export class SugerenciasComponent implements OnInit {
             text: res['Error'],
             timer: 5000
           });
-          setTimeout(() => { this.muestraFlotante();  }, 5001);
+          setTimeout(() => { this.muestraFlotante(); }, 5001);
         }
         else if (res['ErrorToken']) {
           Swal.fire({
@@ -250,7 +254,7 @@ export class SugerenciasComponent implements OnInit {
             text: res['Error'],
             timer: 5000
           });
-          setTimeout(() => { this.muestraFlotante();  }, 5001);
+          setTimeout(() => { this.muestraFlotante(); }, 5001);
         }
         else if (res['ErrorToken']) {
           Swal.fire({
@@ -282,30 +286,75 @@ export class SugerenciasComponent implements OnInit {
   }
 
   enviarSugerencia() {
-    var nombre_archivo = null;
-    if (this.archivo) {
-      const data = new FormData();
-      data.append('archivo', this.archivo, this.archivo.name);
-      this.http.post(this.servidor.ip + '/buzon_backend/subirArchivo.php', data)
-        .subscribe(res => {
-          if (res['Error']) {
-            Swal.fire({
-              type: 'error',
-              title: 'ERROR',
-              text: res['Error'],
-              timer: 5000
-            });
-            setTimeout(() => { this.muestraFlotante();  }, 5001);
-            //nombre_archivo = null;
-          }
-          else if (res['Exito']) {
-            this.altaSugerencia(res['nombre_generado']);
-          }
-        });
+    if (this.modelo.usuario) {
+      if (this.modelo.usuario == 1) {
+        if (this.modelo.tipo && this.modelo.sugerencia && this.captcha_valido) {
+          this.envia = true;
+        }
+        else {
+          Swal.fire({
+            type: 'error',
+            title: 'ERROR',
+            text: "Debes llenar todos los campos obligatorios",
+            timer: 5000
+          });
+          this.envia = false;
+        }
+      }
+      else {
+        if (this.modelo.tipo && this.modelo.sugerencia && this.captcha_valido && this.modelo.relacion && this.modelo.nivel && this.modelo.unidad) {
+          this.envia = true;
+        }
+        else {
+          Swal.fire({
+            type: 'error',
+            title: 'ERROR',
+            text: "Debes llenar todos los campos obligatorios",
+            timer: 5000
+          });
+          this.envia = false;
+        }
+      }
     }
-    else {
-      this.altaSugerencia(null);
+    else{
+      Swal.fire({
+        type: 'error',
+        title: 'ERROR',
+        text: "Debes llenar todos los campos obligatorios",
+        timer: 5000
+      });
+      this.envia = false;
     }
+    if (this.envia) {
+      var nombre_archivo = null;
+      if (this.archivo) {
+        const data = new FormData();
+        data.append('archivo', this.archivo, this.archivo.name);
+        this.http.post(this.servidor.ip + '/buzon_backend/subirArchivo.php', data)
+          .subscribe(res => {
+            if (res['Error']) {
+              Swal.fire({
+                type: 'error',
+                title: 'ERROR',
+                text: res['Error'],
+                timer: 5000
+              });
+              setTimeout(() => { this.muestraFlotante(); }, 5001);
+              //nombre_archivo = null;
+            }
+            else if (res['Exito']) {
+              this.altaSugerencia(res['nombre_generado']);
+            }
+          });
+      }
+      else {
+        this.altaSugerencia(null);
+      }
+    }
+  }
+
+  getResponceCapcha(captchaResponse: string) {
+    this.resolved(captchaResponse);
   }
 
   resolved(captchaResponse: string) {
@@ -348,12 +397,13 @@ export class SugerenciasComponent implements OnInit {
             text: res['Error'],
             timer: 5000
           });
-          setTimeout(() => { this.muestraFlotante();  }, 5001);
+          setTimeout(() => { this.muestraFlotante(); }, 5001);
         }
         else {
           Swal.fire({
             type: 'success',
             title: 'ÉXITO',
+            allowOutsideClick: false,
             html: 'Comentario generado con el folio: <b>' + res['Exito'] + '</b><p>Guarda tu folio para dar seguimiento.</p>'
           }).then((result) => {
             if (result.value) {
@@ -364,6 +414,7 @@ export class SugerenciasComponent implements OnInit {
           this.resetInputFile();
           this.datos_personales = false;
           this.captcha_valido = false;
+          
         }
       });
   }

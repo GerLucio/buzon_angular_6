@@ -10,8 +10,8 @@
 
 body {
     padding-top: 105px;
-    /*background-color: #00569c;*/
-    background-image: url(assets/img/img4.png); 
+    background-color: #f3f3f3;
+    /*background-image: url(assets/img/img4.png);*/
     background-size: cover;
     font-family: 'PT Sans', sans-serif;
 }

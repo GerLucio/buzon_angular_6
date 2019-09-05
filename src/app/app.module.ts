@@ -58,7 +58,7 @@ import { RestableceComponent } from './restablece/restablece.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    RecaptchaModule,
+    RecaptchaModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

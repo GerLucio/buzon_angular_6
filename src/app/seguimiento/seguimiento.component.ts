@@ -54,6 +54,10 @@ export class SeguimientoComponent implements OnInit {
       });
   }
 
+  regresar(){
+    this.router.navigate(['/sugerencias']);
+  }
+
   termina() {
     Swal.fire({
       type: 'info',
