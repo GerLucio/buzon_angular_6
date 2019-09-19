@@ -145,6 +145,7 @@ export class RelacionesComponent implements OnInit {
   }
 
   edita(relacion, campo, longitud) {
+    var relacion2 = JSON.parse(JSON.stringify(relacion));
     var expresion = /^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s.]+$/;
     Swal.mixin({
       input: 'text',
@@ -169,12 +170,12 @@ export class RelacionesComponent implements OnInit {
       {
         title: 'Modificar ' + campo,
         text: 'Escribe un valor válido.',
-        inputValue: relacion[campo]
+        inputValue: relacion2[campo]
       },
     ]).then((result) => {
       if (result.value) {
-        relacion[campo] = result.value[0];
-        this.saveEditable(relacion, campo);
+        relacion2[campo] = result.value[0];
+        this.saveEditable(relacion2, campo);
       }
     })
   }

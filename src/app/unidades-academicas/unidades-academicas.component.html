@@ -19,58 +19,62 @@
               class="btn btn-primary btn-sm btn-grp col-md-2">Nuevo</button>
           </div>
           <div class="form-group">
-            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros" placeholder="Filtro">
+            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros"
+              placeholder="Filtro">
           </div>
           <div *ngIf="unidades_academicas; else sin_registros" class="scroll sin-registros">
-            <table class="table table-striped table-bordered table-hover table-sm">
-              <thead class="thead-dark">
-                <th class="unidad">Unidad Académica o Dependencia</th>
-                <th class="estado-unidad">Estado</th>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let unidad_academica of unidades_academicas| grdFilter: {unidad_academica: filtro}; let i = index">
-                  <td>
-                    <a data-toggle="collapse" href="#collapse{{i}}" role="button" aria-expanded="false"
-                      attr.aria-controls="#collapse{{i}}">{{unidad_academica.unidad_academica}} <i
-                        class="fa fa-caret-down" aria-hidden="true"></i></a>
-                    <div class="collapse" id="collapse{{i}}">
-                <tr>
-                  <td class="w-auto">Unidad Académica</td>
-                  <td class="w-100">
-                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
-                      (click)="edita(unidad_academica, 'unidad_academica', 128)">{{unidad_academica.unidad_academica}}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="w-auto">Nivel Educativo</td>
-                  <td class="w-100">
-                    <div *ngIf="niveles_educativos; else sinNiveles">
+            <div class="accordion" id="accordionParent">
+              <table class="table table-striped table-bordered table-hover table-sm">
+                <thead class="thead-dark">
+                  <th class="unidad">Unidad Académica o Dependencia</th>
+                  <th class="estado-unidad">Estado</th>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let unidad_academica of unidades_academicas| grdFilter: {unidad_academica: filtro}; let i = index">
+                    <td>
+                      <button class="btn btn-link" data-toggle="collapse" attr.data-target="#collapse{{i}}"
+                        aria-expanded="true"
+                        attr.aria-controls="#collapse{{i}}">{{unidad_academica.unidad_academica}} <i
+                          class="fa fa-caret-down" aria-hidden="true"></i></button>
+                      <div class="collapse" id="collapse{{i}}" data-parent="#accordionParent">
+                  <tr>
+                    <td class="w-auto">Unidad Académica</td>
+                    <td class="w-100">
                       <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
-                        (click)="editaSelect(unidad_academica, 'nivel_educativo')">{{niveles_educativos[unidad_academica.nivel_educativo]}}</span>
-                    </div>
-                    <ng-template #sinNiveles>
-                      <p class="text-danger">
-                        No hay niveles educativos registrados
-                      </p>
-                    </ng-template>
-                  </td>
-                </tr>
-          </div>
-          </td>
-          <td>
-            <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="swith{{i}}"
-                [(ngModel)]="unidad_academica.estado_unidad" (change)="cambiaEstado(unidad_academica, $event)">
-              <label class="custom-control-label" for="swith{{i}}"></label>
+                        (click)="edita(unidad_academica, 'unidad_academica', 128)">{{unidad_academica.unidad_academica}}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="w-auto">Nivel Educativo</td>
+                    <td class="w-100">
+                      <div *ngIf="niveles_educativos; else sinNiveles">
+                        <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                          (click)="editaSelect(unidad_academica, 'nivel_educativo')">{{niveles_educativos[unidad_academica.nivel_educativo]}}</span>
+                      </div>
+                      <ng-template #sinNiveles>
+                        <p class="text-danger">
+                          No hay niveles educativos registrados
+                        </p>
+                      </ng-template>
+                    </td>
+                  </tr>
             </div>
-            <span *ngIf="unidad_academica.estado_unidad; else desactivado">Activo</span>
-            <ng-template #desactivado><span>Desactivado</span></ng-template>
-          </td>
-          </tr>
+            </td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="swith{{i}}"
+                  [(ngModel)]="unidad_academica.estado_unidad" (change)="cambiaEstado(unidad_academica, $event)">
+                <label class="custom-control-label" for="swith{{i}}"></label>
+              </div>
+              <span *ngIf="unidad_academica.estado_unidad; else desactivado">Activo</span>
+              <ng-template #desactivado><span>Desactivado</span></ng-template>
+            </td>
+            </tr>
 
-          </tbody>
-          </table>
+            </tbody>
+            </table>
+          </div>
         </div>
         <ng-template #sin_registros>
           <div class="alert alert-danger sin-registros" role="alert">
@@ -105,7 +109,8 @@
               [(ngModel)]="nueva_unidad_academica.nivel_educativo" #nivel_educativo="ngModel" required [ngClass]="{
                       'is-valid' : nivel_educativo.touched && nivel_educativo.valid, 
                       'is-invalid': nivel_educativo.touched && nivel_educativo.invalid}">
-              <option *ngFor="let nivel_educativo of niveles_educativos2; let i=index" value="{{nivel_educativo.value}}">
+              <option *ngFor="let nivel_educativo of niveles_educativos2; let i=index"
+                value="{{nivel_educativo.value}}">
                 {{nivel_educativo.text}}</option>
             </select>
             <div *ngIf="nivel_educativo.invalid" class="invalid-feedback">

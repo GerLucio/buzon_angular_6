@@ -145,6 +145,7 @@ export class CatalogoSugerenciasComponent implements OnInit {
   }
 
   edita(tipo_sugerencia, campo, longitud) {
+    var tipo_sugerencia2 = JSON.parse(JSON.stringify(tipo_sugerencia));
     var expresion = /^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s.]+$/;
     Swal.mixin({
       input: 'text',
@@ -169,12 +170,12 @@ export class CatalogoSugerenciasComponent implements OnInit {
         {
           title: 'Modificar '+campo,
           text: 'Escribe un valor válido.',
-          inputValue: tipo_sugerencia[campo]
+          inputValue: tipo_sugerencia2[campo]
         },
       ]).then((result) => {
         if (result.value) {
-          tipo_sugerencia[campo] = result.value[0];
-          this.saveEditable(tipo_sugerencia, campo);
+          tipo_sugerencia2[campo] = result.value[0];
+          this.saveEditable(tipo_sugerencia2, campo);
         }
       })
   }

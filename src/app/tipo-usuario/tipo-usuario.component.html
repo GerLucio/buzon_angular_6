@@ -15,11 +15,12 @@
         </div>
         <div *ngIf="!ver_nuevo">
           <div class="text-right">
-            <button type="submit" (click)="ver_nuevo = true;"
-              class="btn btn-primary btn-sm btn-grp col-md-2">Nuevo</button>
+            <!--<button type="submit" (click)="ver_nuevo = true;"
+              class="btn btn-primary btn-sm btn-grp col-md-2">Nuevo</button>-->
           </div>
           <div class="form-group">
-            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros" placeholder="Filtro">
+            <input type="text" [(ngModel)]="filtro" class="form-control form-control-sm form sin-registros"
+              placeholder="Filtro">
           </div>
           <div *ngIf="tipos_usuario; else sin_registros" class="scroll sin-registros">
             <table class="table table-striped table-bordered table-hover table-sm">
@@ -30,8 +31,9 @@
               <tbody>
                 <tr *ngFor="let tipo_usuario of tipos_usuario| grdFilter: {tipo_usuario: filtro}; let i = index">
                   <td>
-                    <span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
-                    (click)="edita(tipo_usuario, 'tipo_usuario', 32)">{{tipo_usuario.tipo_usuario}}</span>
+                    <span>{{tipo_usuario.tipo_usuario}}</span>
+                    <!--<span class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar"
+                    (click)="edita(tipo_usuario, 'tipo_usuario', 32)">{{tipo_usuario.tipo_usuario}}</span>-->
                   </td>
                   <td>
                     <div class="custom-control custom-switch">

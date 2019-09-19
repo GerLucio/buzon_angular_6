@@ -25,7 +25,8 @@ export class SugerenciasComponent implements OnInit {
   captcha_valido: boolean;
   envia: boolean = false;
   grecaptcha: any;
-  key : string = "6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X";
+  key: string = "6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X";
+  correo_valido : boolean;
 
   @ViewChild('inputArchivo')
   inputArchivo: ElementRef;
@@ -36,6 +37,7 @@ export class SugerenciasComponent implements OnInit {
     this.nivel_seleccion = false;
     this.datos_personales = false;
     this.captcha_valido = false;
+    this.correo_valido = false;
     this.obtenTiposSugerencias();
     this.obtenTiposUsuarios();
     this.obtenRelaciones();
@@ -110,171 +112,171 @@ export class SugerenciasComponent implements OnInit {
     this.http.post(this.servidor.ip + '/buzon_backend/_obtenTiposSugerencias.php', JSON.stringify({
       tkn: this.token
     }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: res['Error'],
-            timer: 5000
-          });
-          setTimeout(() => { this.muestraFlotante(); }, 5001);
-        }
-        else if (res['ErrorToken']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR DE SESIÓN',
-            text: 'Por favor, inicia sesión nuevamente',
-            timer: 3000
-          });
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+    }).subscribe(res => {
+      if (res['Error']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR',
+          text: res['Error'],
+          timer: 5000
+        });
+        setTimeout(() => { this.muestraFlotante(); }, 5001);
+      }
+      else if (res['ErrorToken']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR DE SESIÓN',
+          text: 'Por favor, inicia sesión nuevamente',
+          timer: 3000
+        });
+        setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+      }
+      else {
+        if (res == "Sin registros") {
+          this.tipos_sugerencia = null;
         }
         else {
-          if (res == "Sin registros") {
-            this.tipos_sugerencia = null;
-          }
-          else {
-            this.tipos_sugerencia = res;
-          }
+          this.tipos_sugerencia = res;
         }
-      });
+      }
+    });
   }
 
   obtenTiposUsuarios() {
     this.http.post(this.servidor.ip + '/buzon_backend/_obtenTiposUsuarios.php', JSON.stringify({
       tkn: this.token
     }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: res['Error'],
-            timer: 5000
-          });
-          setTimeout(() => { this.muestraFlotante(); }, 5001);
-        }
-        else if (res['ErrorToken']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR DE SESIÓN',
-            text: 'Por favor, inicia sesión nuevamente',
-            timer: 3000
-          });
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+    }).subscribe(res => {
+      if (res['Error']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR',
+          text: res['Error'],
+          timer: 5000
+        });
+        setTimeout(() => { this.muestraFlotante(); }, 5001);
+      }
+      else if (res['ErrorToken']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR DE SESIÓN',
+          text: 'Por favor, inicia sesión nuevamente',
+          timer: 3000
+        });
+        setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+      }
+      else {
+        if (res == "Sin registros") {
+          this.tipos_usuario = null;
         }
         else {
-          if (res == "Sin registros") {
-            this.tipos_usuario = null;
-          }
-          else {
-            this.tipos_usuario = res;
-          }
+          this.tipos_usuario = res;
         }
-      });
+      }
+    });
   }
 
   obtenRelaciones() {
     this.http.post(this.servidor.ip + '/buzon_backend/_obtenRelaciones.php', JSON.stringify({
       tkn: this.token
     }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: res['Error'],
-            timer: 5000
-          });
-          setTimeout(() => { this.muestraFlotante(); }, 5001);
-        }
-        else if (res['ErrorToken']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR DE SESIÓN',
-            text: 'Por favor, inicia sesión nuevamente',
-            timer: 3000
-          });
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+    }).subscribe(res => {
+      if (res['Error']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR',
+          text: res['Error'],
+          timer: 5000
+        });
+        setTimeout(() => { this.muestraFlotante(); }, 5001);
+      }
+      else if (res['ErrorToken']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR DE SESIÓN',
+          text: 'Por favor, inicia sesión nuevamente',
+          timer: 3000
+        });
+        setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+      }
+      else {
+        if (res == "Sin registros") {
+          this.relaciones = null;
         }
         else {
-          if (res == "Sin registros") {
-            this.relaciones = null;
-          }
-          else {
-            this.relaciones = res;
-          }
+          this.relaciones = res;
         }
-      });
+      }
+    });
   }
 
   obtenNivelesEducativos() {
     this.http.post(this.servidor.ip + '/buzon_backend/_obtenNivelesEducativos.php', JSON.stringify({
       tkn: this.token
     }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: res['Error'],
-            timer: 5000
-          });
-          setTimeout(() => { this.muestraFlotante(); }, 5001);
-        }
-        else if (res['ErrorToken']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR DE SESIÓN',
-            text: 'Por favor, inicia sesión nuevamente',
-            timer: 3000
-          });
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+    }).subscribe(res => {
+      if (res['Error']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR',
+          text: res['Error'],
+          timer: 5000
+        });
+        setTimeout(() => { this.muestraFlotante(); }, 5001);
+      }
+      else if (res['ErrorToken']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR DE SESIÓN',
+          text: 'Por favor, inicia sesión nuevamente',
+          timer: 3000
+        });
+        setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+      }
+      else {
+        if (res == "Sin registros") {
+          this.niveles_educativos = null;
         }
         else {
-          if (res == "Sin registros") {
-            this.niveles_educativos = null;
-          }
-          else {
-            this.niveles_educativos = res;
-          }
+          this.niveles_educativos = res;
         }
-      });
+      }
+    });
   }
 
   obtenUnidades() {
     this.http.post(this.servidor.ip + '/buzon_backend/_obtenUnidades.php', JSON.stringify({
       tkn: this.token
     }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: res['Error'],
-            timer: 5000
-          });
-          setTimeout(() => { this.muestraFlotante(); }, 5001);
-        }
-        else if (res['ErrorToken']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR DE SESIÓN',
-            text: 'Por favor, inicia sesión nuevamente',
-            timer: 3000
-          });
-          setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+    }).subscribe(res => {
+      if (res['Error']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR',
+          text: res['Error'],
+          timer: 5000
+        });
+        setTimeout(() => { this.muestraFlotante(); }, 5001);
+      }
+      else if (res['ErrorToken']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR DE SESIÓN',
+          text: 'Por favor, inicia sesión nuevamente',
+          timer: 3000
+        });
+        setTimeout(() => { this.router.navigate(['/login']); }, 3000);
+      }
+      else {
+        if (res == "Sin registros") {
+          this.unidades_academicas = null;
         }
         else {
-          if (res == "Sin registros") {
-            this.unidades_academicas = null;
-          }
-          else {
-            this.unidades_academicas = res;
-          }
-          this.unidades_academicas_filtro = this.unidades_academicas;
+          this.unidades_academicas = res;
         }
-      });
+        this.unidades_academicas_filtro = this.unidades_academicas;
+      }
+    });
   }
 
   filtraUnidad(event) {
@@ -285,71 +287,58 @@ export class SugerenciasComponent implements OnInit {
     this.modelo.unidad = null;
   }
 
-  enviarSugerencia() {
-    if (this.modelo.usuario) {
-      if (this.modelo.usuario == 1) {
-        if (this.modelo.tipo && this.modelo.sugerencia && this.captcha_valido) {
-          this.envia = true;
-        }
-        else {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: "Debes llenar todos los campos obligatorios",
-            timer: 5000
-          });
-          this.envia = false;
-        }
-      }
-      else {
-        if (this.modelo.tipo && this.modelo.sugerencia && this.captcha_valido && this.modelo.relacion && this.modelo.nivel && this.modelo.unidad) {
-          this.envia = true;
-        }
-        else {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: "Debes llenar todos los campos obligatorios",
-            timer: 5000
-          });
-          this.envia = false;
-        }
-      }
+  validaCorreo(){
+    if(this.modelo.correo.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/)){
+      this.correo_valido = true;
+      return;
     }
-    else{
+    this.correo_valido = false;
+  }
+
+  enviarSugerencia() {
+    if(this.modelo.telefono && this.modelo.telefono.toString().length > 10){
       Swal.fire({
         type: 'error',
         title: 'ERROR',
-        text: "Debes llenar todos los campos obligatorios",
+        text: "Longitud del telefono incorrecta",
         timer: 5000
       });
-      this.envia = false;
+      return;
     }
-    if (this.envia) {
-      var nombre_archivo = null;
-      if (this.archivo) {
-        const data = new FormData();
-        data.append('archivo', this.archivo, this.archivo.name);
-        this.http.post(this.servidor.ip + '/buzon_backend/subirArchivo.php', data)
-          .subscribe(res => {
-            if (res['Error']) {
-              Swal.fire({
-                type: 'error',
-                title: 'ERROR',
-                text: res['Error'],
-                timer: 5000
-              });
-              setTimeout(() => { this.muestraFlotante(); }, 5001);
-              //nombre_archivo = null;
-            }
-            else if (res['Exito']) {
-              this.altaSugerencia(res['nombre_generado']);
-            }
-          });
+    if (this.datos_personales) {
+      if(!this.modelo.correo.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/)){
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR',
+          text: "Debes proporcionar un correo válido",
+          timer: 5000
+        });
+        return;
       }
-      else {
-        this.altaSugerencia(null);
-      }
+    }
+    var nombre_archivo = null;
+    if (this.archivo) {
+      const data = new FormData();
+      data.append('archivo', this.archivo, this.archivo.name);
+      this.http.post(this.servidor.ip + '/buzon_backend/subirArchivo.php', data)
+        .subscribe(res => {
+          if (res['Error']) {
+            Swal.fire({
+              type: 'error',
+              title: 'ERROR',
+              text: res['Error'],
+              timer: 5000
+            });
+            setTimeout(() => { this.muestraFlotante(); }, 5001);
+            //nombre_archivo = null;
+          }
+          else if (res['Exito']) {
+            this.altaSugerencia(res['nombre_generado']);
+          }
+        });
+    }
+    else {
+      this.altaSugerencia(null);
     }
   }
 
@@ -362,14 +351,14 @@ export class SugerenciasComponent implements OnInit {
     this.http.post(this.servidor.ip + '/buzon_backend/validaCaptcha.php', JSON.stringify({
       token_captcha: this.modelo.token_captcha
     }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          this.captcha_valido = false;
-        }
-        else {
-          this.captcha_valido = true;
-        }
-      });
+    }).subscribe(res => {
+      if (res['Error']) {
+        this.captcha_valido = false;
+      }
+      else {
+        this.captcha_valido = true;
+      }
+    });
   }
 
   altaSugerencia(nombre_archivo) {
@@ -389,34 +378,35 @@ export class SugerenciasComponent implements OnInit {
     this.http.post(this.servidor.ip + '/buzon_backend/altaSugerencia.php', JSON.stringify({
       sugerencia: this.modelo, nombre_archivo: nombre_archivo, inicial: inicial
     }), {
-      }).subscribe(res => {
-        if (res['Error']) {
-          Swal.fire({
-            type: 'error',
-            title: 'ERROR',
-            text: res['Error'],
-            timer: 5000
-          });
-          setTimeout(() => { this.muestraFlotante(); }, 5001);
-        }
-        else {
-          Swal.fire({
-            type: 'success',
-            title: 'ÉXITO',
-            allowOutsideClick: false,
-            html: 'Comentario generado con el folio: <b>' + res['Exito'] + '</b><p>Guarda tu folio para dar seguimiento.</p>'
-          }).then((result) => {
-            if (result.value) {
-              this.muestraFlotante();
-            }
-          });
-          this.modelo = {};
-          this.resetInputFile();
-          this.datos_personales = false;
-          this.captcha_valido = false;
-          
-        }
-      });
+    }).subscribe(res => {
+      if (res['Error']) {
+        Swal.fire({
+          type: 'error',
+          title: 'ERROR',
+          text: res['Error'],
+          timer: 5000
+        });
+        setTimeout(() => { this.muestraFlotante(); }, 5001);
+      }
+      else {
+        Swal.fire({
+          type: 'success',
+          title: 'ÉXITO',
+          allowOutsideClick: false,
+          html: 'Comentario generado con el folio: <b>' + res['Exito'] + '</b><p>Guarda tu folio para dar seguimiento.</p>'
+        }).then((result) => {
+          if (result.value) {
+            this.muestraFlotante();
+          }
+        });
+        this.modelo = {};
+        this.resetInputFile();
+        this.datos_personales = false;
+        this.captcha_valido = false;
+        this.correo_valido = false;
+
+      }
+    });
   }
 
 }

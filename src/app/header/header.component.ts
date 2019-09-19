@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.tamano_pantalla = window.innerWidth;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -42,6 +43,12 @@ export class HeaderComponent implements OnInit {
     else{
       user = null;
       this.usuario_actual = new Usuario();
+    }
+  }
+
+  expande(){
+    if(this.tamano_pantalla < 768){
+      var btn = document.getElementById("expand-btn").click();
     }
   }
 

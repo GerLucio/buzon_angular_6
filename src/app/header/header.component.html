@@ -35,7 +35,7 @@
 </nav>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg fixed-top fixed-top-2 justify-content-center">
     <a class="navbar-brand d-flex w-50 mr-auto" routerLink="/">Buzón de Sugerencias</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu"
+    <button class="navbar-toggler" id="expand-btn" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -48,7 +48,7 @@
         </ul>
         <ul *ngIf="!autenticado" class="nav navbar-nav ml-auto w-100 justify-content-end">
             <li class="nav-item active">
-                <a class="nav-link" routerLink="/login"><span class="fa fa-sign-in"></span>
+                <a class="nav-link" (click)="expande()" routerLink="/login"><span class="fa fa-sign-in"></span>
                     Iniciar sesión</a>
             </li>
         </ul>
@@ -60,8 +60,8 @@
                     Administración
                 </a>
                 <div class="dropdown-menu dropdown-menu-right animated flipInX" aria-labelledby="dropdownadmin">
-                    <a class="dropdown-item" routerLink="/panel">Sugerencias</a>
-                    <a class="dropdown-item" routerLink="/admin_usuario">Usuario</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/panel">Sugerencias</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/admin_usuario">Usuario</a>
                 </div>
             </li>
             <li class="nav-item dropdown active">
@@ -70,21 +70,21 @@
                     Catálogos
                 </a>
                 <div class="dropdown-menu dropdown-menu-right animated flipInX" aria-labelledby="dropdowncatalogos">
-                    <a class="dropdown-item" routerLink="/areas">Áreas de asignación</a>
-                    <a class="dropdown-item" routerLink="/estados">Estados</a>
-                    <a class="dropdown-item" routerLink="/nivel_educativo">Niveles Educativos</a>
-                    <a class="dropdown-item" routerLink="/prioridades">Prioridades</a>
-                    <a class="dropdown-item" routerLink="/relaciones">Relaciones con el Instituto</a>
-                    <a class="dropdown-item" routerLink="/catalogo_sugerencias">Tipos de Sugerencias</a>
-                    <a class="dropdown-item" routerLink="/tipo_usuario">Tipos de Usuarios</a>
-                    <a class="dropdown-item" routerLink="/unidades_academicas">Unidades Académicas y Dependencias</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/areas">Áreas de asignación</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/estados">Estados</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/nivel_educativo">Niveles Educativos</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/prioridades">Prioridades</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/relaciones">Relaciones con el Instituto</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/catalogo_sugerencias">Tipos de Sugerencias</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/tipo_usuario">Tipos de Usuarios</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/unidades_academicas">Unidades Académicas y Dependencias</a>
                 </div>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" routerLink="/graficos">Gráficos</a>
+                <a class="nav-link" (click)="expande()" routerLink="/graficos">Gráficos</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" routerLink="/login">
+                <a class="nav-link" (click)="expande()" routerLink="/login">
                     <span class="fa fa-sign-out"></span> Salir
                 </a>
             </li>
@@ -99,21 +99,21 @@
                     Administración
                 </a>
                 <div class="dropdown-menu dropdown-menu-right animated flipInX" aria-labelledby="dropdownadmin2">
-                    <a class="dropdown-item" routerLink="/admin_usuario">Cuenta</a>
-                    <a class="dropdown-item" routerLink="/administracion_sugerencias">Sugerencias</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/admin_usuario">Cuenta</a>
+                    <a class="dropdown-item" (click)="expande()" routerLink="/administracion_sugerencias">Sugerencias</a>
                 </div>
             </li>
 
             <li *ngIf="usuario_actual.area_asignacion=='Dirección'" class="nav-item active">
-                <a class="nav-link" routerLink="/direccion">Dirección</a>
+                <a class="nav-link" (click)="expande()" routerLink="/direccion">Dirección</a>
             </li>
 
             <li *ngIf="usuario_actual.area_asignacion=='Dirección'" class="nav-item active">
-                <a class="nav-link" routerLink="/graficos">Gráficos</a>
+                <a class="nav-link" (click)="expande()" routerLink="/graficos">Gráficos</a>
             </li>
 
             <li class="nav-item active">
-                <a class="nav-link" routerLink="/login">
+                <a class="nav-link" (click)="expande()" routerLink="/login">
                     <span class="fa fa-sign-out"></span> Salir
                 </a>
             </li>

@@ -67,10 +67,13 @@ inline-editor:hover{
     color: #00569c;
 }
 
-.editable:hover{
+.editable{
     text-decoration-line: underline;
     color: #00569c;
-    cursor: pointer;
+}
+
+.editable:hover{
+  cursor: pointer;
 }
 
 .scroll-x{

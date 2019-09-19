@@ -145,6 +145,7 @@ export class NivelEducativoComponent implements OnInit {
   }
 
   edita(nivel_educativo, campo, longitud) {
+    var nivel_educativo2 = JSON.parse(JSON.stringify(nivel_educativo));
     var expresion = /^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s.]+$/;
     Swal.mixin({
       input: 'text',
@@ -169,12 +170,12 @@ export class NivelEducativoComponent implements OnInit {
         {
           title: 'Modificar '+campo,
           text: 'Escribe un valor válido.',
-          inputValue: nivel_educativo[campo]
+          inputValue: nivel_educativo2[campo]
         },
       ]).then((result) => {
         if (result.value) {
-          nivel_educativo[campo] = result.value[0];
-          this.saveEditable(nivel_educativo, campo);
+          nivel_educativo2[campo] = result.value[0];
+          this.saveEditable(nivel_educativo2, campo);
         }
       })
   }

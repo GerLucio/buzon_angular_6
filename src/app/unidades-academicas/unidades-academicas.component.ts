@@ -217,6 +217,7 @@ export class UnidadesAcademicasComponent implements OnInit {
   }
 
   edita(unidad_academica, campo, longitud) {
+    var unidad_academica2 = JSON.parse(JSON.stringify(unidad_academica));
     Swal.mixin({
       input: 'text',
       inputAttributes: {
@@ -236,12 +237,12 @@ export class UnidadesAcademicasComponent implements OnInit {
         {
           title: 'Modificar '+campo,
           text: 'Escribe un valor válido.',
-          inputValue: unidad_academica[campo]
+          inputValue: unidad_academica2[campo]
         },
       ]).then((result) => {
         if (result.value) {
-          unidad_academica[campo] = result.value[0];
-          this.saveEditable(unidad_academica, campo);
+          unidad_academica2[campo] = result.value[0];
+          this.saveEditable(unidad_academica2, campo);
         }
       })
   }

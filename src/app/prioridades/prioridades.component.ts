@@ -145,6 +145,7 @@ export class PrioridadesComponent implements OnInit {
   }
 
   edita(prioridad, campo, longitud) {
+    var prioridad2 = JSON.parse(JSON.stringify(prioridad));
     var expresion = /^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ\s.]+$/;
     Swal.mixin({
       input: 'text',
@@ -169,12 +170,12 @@ export class PrioridadesComponent implements OnInit {
         {
           title: 'Modificar '+campo,
           text: 'Escribe un valor válido.',
-          inputValue: prioridad[campo]
+          inputValue: prioridad2[campo]
         },
       ]).then((result) => {
         if (result.value) {
-          prioridad[campo] = result.value[0];
-          this.saveEditable(prioridad, campo);
+          prioridad2[campo] = result.value[0];
+          this.saveEditable(prioridad2, campo);
         }
       })
   }
