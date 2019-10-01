@@ -296,7 +296,7 @@ export class SugerenciasComponent implements OnInit {
   }
 
   enviarSugerencia() {
-    if(this.modelo.telefono && this.modelo.telefono.toString().length > 10){
+    if(this.modelo.telefono && this.modelo.telefono.toString().length != 10){
       Swal.fire({
         type: 'error',
         title: 'ERROR',

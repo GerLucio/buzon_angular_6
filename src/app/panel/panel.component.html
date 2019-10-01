@@ -159,7 +159,7 @@
                   <ng-template #noPrioridad>
                     <td>
                       <span class="badge badge-danger">Sin registro</span>
-                      <span (click)="Administrar()" class="editable badge badge-dark">Clic para asignar</span>
+                      <span (click)="Administrar()" class="editable badge badge-light">Clic para asignar</span>
                     </td>
                   </ng-template>
                 </tr>
@@ -169,7 +169,7 @@
                   <ng-template #noArea>
                     <td>
                       <span class="badge badge-danger">Sin registro</span>
-                      <span (click)="Administrar()" class="editable badge badge-dark">Clic para asignar</span>
+                      <span (click)="Administrar()" class="editable badge badge-light">Clic para asignar</span>
                     </td>
                   </ng-template>
                 </tr>
@@ -177,7 +177,7 @@
                   <th>Estado</th>
                   <td>
                     <span class="{{estado_actual.color}}">{{sugerencia_actual.estado}}</span>
-                    <span (click)="CancelarSugerencia()" class="editable badge badge-dark">Clic para cancelar</span>
+                    <span (click)="CancelarSugerencia()" class="editable badge badge-light">Clic para cancelar</span>
                   </td>
                 </tr>
 
@@ -245,11 +245,11 @@
                       data-placement="right" title="Clic para editar">
                       <span *ngIf="prioridades[sugerencia_actual.id_prioridad]; else otraprioridad">
                         {{prioridades[sugerencia_actual.id_prioridad]}}
-                        <span class="editable badge badge-dark">Clic para editar</span>
+                        <span class="editable badge badge-light">Clic para editar</span>
                       </span>
                       <ng-template #otraprioridad>
                         <span class="text-danger">Prioridad actual no disponible.</span>
-                        <span class="editable badge badge-dark">Clic para asignar una nueva</span>
+                        <span class="editable badge badge-light">Clic para asignar una nueva</span>
                       </ng-template>
                     </span>
                     <ng-template #noprioridades>
@@ -264,11 +264,11 @@
                       class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar">
                       <span *ngIf="areas[sugerencia_actual.id_area_asignacion]; else otraarea">
                         {{areas[sugerencia_actual.id_area_asignacion]}}
-                        <span class="editable badge badge-dark">Clic para editar</span>
+                        <span class="editable badge badge-light">Clic para editar</span>
                       </span>
                       <ng-template #otraarea>
                         <span class="text-danger">Área actual no disponible.</span>
-                        <span class="editable badge badge-dark">Clic para asignar una nueva</span>
+                        <span class="editable badge badge-light">Clic para asignar una nueva</span>
                       </ng-template>
                     </span>
                     <ng-template #noareas>

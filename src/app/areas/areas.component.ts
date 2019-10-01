@@ -283,12 +283,12 @@ export class AreasComponent implements OnInit {
         area2.titular_area = result.value[1];
         area2.correo_area = result.value[2];
         area2.extension_area = result.value[3];
-        this.saveEditable(area2);
+        this.saveEditable(area2, area.correo_area);
       }
     })
   }
 
-  saveEditable(area) {
+  saveEditable(area, correo) {
     Swal.fire({
       type: 'info',
       title: 'Enviando petición',
@@ -297,7 +297,7 @@ export class AreasComponent implements OnInit {
       allowOutsideClick: false
     });
     this.http.post(this.servidor.ip + '/buzon_backend/editaArea2.php', JSON.stringify({
-      tkn: this.token, area: area, url: this.servidor.url
+      tkn: this.token, area: area, url: this.servidor.url, correo_anterior: correo
     }), {
     }).subscribe(res => {
       if (res['Error']) {

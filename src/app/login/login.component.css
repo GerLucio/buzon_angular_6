@@ -1,13 +1,24 @@
 .login-caja {
     background: #ffffff;
     padding: 25px;
+    border-radius:.25rem!important
 }
 
 .container-fluid {
-    background-image: url('../../assets/img/img3.jpg'); 
-    background-size: cover;
+    background-image: url('../../assets/img/back.svg'); 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 .texto-sm{
     font-size: 1rem;
+}
+
+.logo{
+    margin-bottom: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }

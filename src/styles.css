@@ -10,9 +10,12 @@
 
 body {
     padding-top: 105px;
-    background-color: #f3f3f3;
-    /*background-image: url(assets/img/img4.png);*/
-    background-size: cover;
+    /*background-color: #f3f3f3;*/
+    background-image: url(assets/img/back2.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    height: 10%;
     font-family: 'PT Sans', sans-serif;
 }
 
@@ -73,6 +76,10 @@ inline-editor:hover{
 }
 
 .editable:hover{
+  cursor: pointer;
+}
+
+.img-edit:hover{
   cursor: pointer;
 }
 
