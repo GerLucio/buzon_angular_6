@@ -33,6 +33,8 @@ export class GraficosComponent implements OnInit {
   PieChart: any = [];
   BarChart: any = [];
 
+  titulo_export : any = [];
+
   constructor(private router: Router, private http: HttpClient) {
   }
 
@@ -243,6 +245,7 @@ export class GraficosComponent implements OnInit {
               if (this.modelo.fecha_f && this.modelo.fecha_i) {
                 titulo.push('Filtro por fechas: de ' + this.modelo.fecha_i + ' a ' + this.modelo.fecha_f);
               }
+              this.titulo_export[0] = titulo;
               var datos = res['valor'];
               this.PieChart = new Chart('pie-chart', {
                 type: 'pie',
@@ -316,7 +319,7 @@ export class GraficosComponent implements OnInit {
               if (this.modelo.fecha_f && this.modelo.fecha_i) {
                 lab = lab + '. Filtro por fechas: de ' + this.modelo.fecha_i + ' a ' + this.modelo.fecha_f;
               }
-
+              this.titulo_export[0] = lab;
               var datos = res['valor'];
               this.BarChart = new Chart('pie-chart', {
                 type: 'bar',
@@ -412,8 +415,15 @@ export class GraficosComponent implements OnInit {
      * pt, mm, cm, in, px, pc, em, ex
      * 3 parametro es aarreglo de ancho y largo
     */
+    var cadena = 'Departamento de Evaluación y Gestión de la Calidad';
     var pdf = new jsPDF('p', 'pt', [total_x, total_y]);
-    pdf.text(10, 10, 'Sugerencias recibidas por ' + this.modelo.dimension)
+    var textWidth = pdf.getStringUnitWidth(cadena) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
+    var textOffset = (pdf.internal.pageSize.width - textWidth) / 2;
+    pdf.text(cadena, textOffset, 30);
+    pdf.setFontSize(10);
+    pdf.text('Gráfico de sugerencias recibidas en el Buzón de Sugerencias', 10, 90);
+    pdf.text(this.titulo_export[0], 10, 110);
+    pdf.text('Mostrando dimensión: '+this.modelo.dimension, 10, 130);
     if (this.tamano_pantalla > 575) {
       var x = 592;
       var y = (canvas.height * x) / canvas.width;
