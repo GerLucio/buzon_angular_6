@@ -61,15 +61,17 @@ export class PanelComponent implements OnInit {
     this.autenticado = JSON.parse(localStorage.getItem('autenticado'));
     if (this.autenticado) {
       user = JSON.parse(localStorage.getItem('usuario'));
-      if(user.rol != 'admin'){
+      if(user.rol == 'admin' || user.area_asignacion == "Dirección"){
+        this.usuario_actual.rol = user.rol;
+        this.usuario_actual.id_usuario = user.id_usuario;
+        this.usuario_actual.nombre = user.nombre;
+        this.usuario_actual.apellidos = user.apellidos;
+        this.usuario_actual.correo = user.correo;
+        this.token = JSON.parse(localStorage.getItem('tkn'));
+      }
+      else{
         this.router.navigate(['/sugerencias']);
       }
-      this.usuario_actual.rol = user.rol;
-      this.usuario_actual.id_usuario = user.id_usuario;
-      this.usuario_actual.nombre = user.nombre;
-      this.usuario_actual.apellidos = user.apellidos;
-      this.usuario_actual.correo = user.correo;
-      this.token = JSON.parse(localStorage.getItem('tkn'));
     }
   }
 

@@ -42,7 +42,7 @@
 
             <!--Usuario interno o externo-->
             <div class="form-group col-md-6">
-              <label for="usuario">* Tipo de usuario</label>
+              <label for="usuario">* ¿Eres parte de la UPEV?</label>
               <select class="form-control form-control-sm" (change)="captcha_valido = false" id="usuario" name="usuario"
                 [(ngModel)]="modelo.usuario" #usuario="ngModel" required [ngClass]="{
                     'is-valid' : usuario.touched && usuario.valid, 
@@ -102,10 +102,103 @@
               </div>
 
             </div>
+            <div class="form-row">
+
+              <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="datos_personales" name="datos_personales"
+                    class="custom-control-input" id="datos_personales">
+                  <label class="custom-control-label" for="datos_personales">
+                    <b>¿Deseas mantenerte informado respecto al estado de tu opinión y/o sugerencia?</b>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <div *ngIf="datos_personales">
+              <div class="form-row">
+                <!--Nombre-->
+                <div class="form-group col-md-4">
+                  <label for="nombre">* Nombre (s)</label>
+                  <input type="text" class="form-control form-control-sm" id="nombre" placeholder="Nombre (s)"
+                    name="nombre" required [(ngModel)]="modelo.nombre" #nombre="ngModel" maxlength="32" [ngClass]="{
+                          'is-valid' : nombre.touched && nombre.valid, 
+                          'is-invalid': nombre.touched && nombre.invalid}">
+                  <div *ngIf="nombre.invalid" class="invalid-feedback">
+                    <div *ngIf="nombre.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+                <!--Apellido paterno-->
+                <div class="form-group col-md-4">
+                  <label for="apellidop">* Apellido Paterno</label>
+                  <input type="text" class="form-control form-control-sm" id="apellidop" name="apellidop" required
+                    [(ngModel)]="modelo.apellidop" #apellidop="ngModel" placeholder="Apellido Paterno" maxlength="16"
+                    [ngClass]="{
+                            'is-valid' : apellidop.touched && apellidop.valid, 
+                            'is-invalid': apellidop.touched && apellidop.invalid}">
+                  <div *ngIf="apellidop.invalid" class="invalid-feedback">
+                    <div *ngIf="apellidop.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+                <!--Apellido materno-->
+                <div class="form-group col-md-4">
+                  <label for="apellidom">* Apellido Materno</label>
+                  <input type="text" class="form-control form-control-sm" id="apellidom" name="apellidom" required
+                    [(ngModel)]="modelo.apellidom" #apellidom="ngModel" placeholder="Apellido Materno" maxlength="16"
+                    [ngClass]="{
+                            'is-valid' : apellidom.touched && apellidom.valid, 
+                            'is-invalid': apellidom.touched && apellidom.invalid}">
+                  <div *ngIf="apellidom.invalid" class="invalid-feedback">
+                    <div *ngIf="apellidom.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="form-row">
+
+                <!--Correo-->
+                <div class="form-group col-md-4">
+                  <label for="correo">* Correo</label>
+                  <input type="email" (keyup)="validaCorreo()" class="form-control form-control-sm" id="correo"
+                    placeholder="Correo" name="correo" required [(ngModel)]="modelo.correo" #correo="ngModel"
+                    maxlength="32" [ngClass]="{
+                            'is-valid' : correo.touched && correo_valido, 
+                            'is-invalid': correo.touched && !correo_valido}" email>
+                  <div *ngIf="correo.invalid" class="invalid-feedback">
+                    <div *ngIf="correo.errors.required">Campo obligatorio</div>
+                    <div *ngIf="correo.errors.email">El correo no es válido</div>
+                  </div>
+                </div>
+
+                <!--Teléfono-->
+                <div class="form-group col-md-4">
+                  <label for="telefono">Teléfono (10 digitos)</label>
+                  <input type="number" class="form-control form-control-sm" id="telefono" placeholder="Teléfono"
+                    name="telefono" [(ngModel)]="modelo.telefono" #telefono="ngModel" maxlength="32" [ngClass]="{
+                            'is-valid' : telefono.touched && telefono.valid, 
+                            'is-invalid': telefono.touched && telefono.invalid}">
+                  <div *ngIf="telefono.invalid" class="invalid-feedback">
+                    <div *ngIf="telefono.errors.required">Campo obligatorio</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
             <re-captcha (resolved)="resolved($event)" siteKey="6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X"></re-captcha>
-            <div class="text-right">
+            <div *ngIf="!datos_personales" class="text-right">
               <button [disabled]="!modelo.tipo || !modelo.sugerencia || !captcha_valido" type="submit"
-              (click)="enviarSugerencia()" class="btn btn-primary btn-sm btn-grp col-md-2">Enviar</button>
+                (click)="enviarSugerencia()" class="btn btn-primary btn-sm btn-grp col-md-2">Enviar</button>
+            </div>
+
+            <div *ngIf="datos_personales" class="text-right">
+              <button
+                [disabled]="!modelo.tipo || !modelo.sugerencia || !captcha_valido || !modelo.correo || !modelo.apellidom || !modelo.apellidop || !modelo.nombre"
+                type="
+                submit" (click)="enviarSugerencia()" class="btn btn-primary btn-sm btn-grp col-md-2">Enviar</button>
             </div>
 
           </div>
@@ -264,8 +357,9 @@
                 <!--Correo-->
                 <div class="form-group col-md-4">
                   <label for="correo">* Correo</label>
-                  <input type="email" (keyup)="validaCorreo()" class="form-control form-control-sm" id="correo" placeholder="Correo" name="correo" required
-                    [(ngModel)]="modelo.correo" #correo="ngModel" maxlength="32" [ngClass]="{
+                  <input type="email" (keyup)="validaCorreo()" class="form-control form-control-sm" id="correo"
+                    placeholder="Correo" name="correo" required [(ngModel)]="modelo.correo" #correo="ngModel"
+                    maxlength="32" [ngClass]="{
                           'is-valid' : correo.touched && correo_valido, 
                           'is-invalid': correo.touched && !correo_valido}" email>
                   <div *ngIf="correo.invalid" class="invalid-feedback">
@@ -291,15 +385,17 @@
 
             <re-captcha (resolved)="resolved($event)" siteKey="6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X"></re-captcha>
             <div *ngIf="!datos_personales" class="text-right">
-              <input 
-              [disabled]="!modelo.tipo || !modelo.relacion || !modelo.nivel || !modelo.unidad || !modelo.sugerencia || !captcha_valido"
-              type="submit" value="Enviar" (click)="enviarSugerencia()" class="btn btn-primary btn-sm btn-grp col-md-2" />
+              <input
+                [disabled]="!modelo.tipo || !modelo.relacion || !modelo.nivel || !modelo.unidad || !modelo.sugerencia || !captcha_valido"
+                type="submit" value="Enviar" (click)="enviarSugerencia()"
+                class="btn btn-primary btn-sm btn-grp col-md-2" />
             </div>
             <div *ngIf="datos_personales" class="text-right">
-                <input
+              <input
                 [disabled]="!modelo.tipo || !modelo.relacion || !modelo.nivel || !modelo.unidad || !modelo.sugerencia || !captcha_valido || !modelo.correo || !modelo.apellidom || !modelo.apellidop || !modelo.nombre"
-                type="submit" value="Enviar" (click)="enviarSugerencia()" class="btn btn-primary btn-sm btn-grp col-md-2" />
-              </div>
+                type="submit" value="Enviar" (click)="enviarSugerencia()"
+                class="btn btn-primary btn-sm btn-grp col-md-2" />
+            </div>
           </div>
 
           <!--<div id="captcha-div">

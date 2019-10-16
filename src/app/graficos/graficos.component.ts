@@ -423,7 +423,7 @@ export class GraficosComponent implements OnInit {
     pdf.setFontSize(10);
     pdf.text('Gráfico de sugerencias recibidas en el Buzón de Sugerencias', 10, 90);
     pdf.text(this.titulo_export[0], 10, 110);
-    pdf.text('Mostrando dimensión: '+this.modelo.dimension, 10, 130);
+    pdf.text('Mostrando dimensión: '+this.modelo.dimension, 10, 150);
     if (this.tamano_pantalla > 575) {
       var x = 592;
       var y = (canvas.height * x) / canvas.width;

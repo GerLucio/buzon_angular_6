@@ -158,7 +158,7 @@
                     <span *ngIf="estados_select; else noestados" (click)="editaEstado(sugerencia_actual, 'estado')"
                       class="editable" data-toggle="tooltip" data-placement="right" title="Clic para editar">
                       <span class="{{estados[0].color}} editable">{{sugerencia_actual.estado}}</span>
-                      <span class="editable badge badge-dark">Clic para editar</span>
+                      <span class="editable badge badge-light">Clic para editar</span>
                     </span>
                     <ng-template #noestados>
                       <span class="text-danger">No hay estados dados de alta.</span>
