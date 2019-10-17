@@ -385,6 +385,7 @@ export class PanelComponent implements OnInit {
   }
 
   atiendeSugerenciaRecibida(sugerencia_actual) {
+    var responsable = "";
     Swal.fire({
       type: 'info',
       title: 'Enviando petición',
@@ -392,8 +393,14 @@ export class PanelComponent implements OnInit {
       showConfirmButton: false,
       allowOutsideClick: false
     });
+    if(this.usuario_actual.rol == 'admin'){
+      responsable = "Administrador";
+    }
+    else if(this.usuario_actual.rol == 'area'){
+      responsable = "Director UPEV";
+    }
     this.http.post(this.servidor.ip + '/buzon_backend/atiendeSugerenciaRecibida.php', JSON.stringify({
-      tkn: this.token, sugerencia: sugerencia_actual
+      tkn: this.token, sugerencia: sugerencia_actual, responsable: responsable
     }), {
       }).subscribe(res => {
         if (res['Error']) {
@@ -426,7 +433,7 @@ export class PanelComponent implements OnInit {
   }
 
   CancelarSugerencia() {
-
+    var responsable = "";
     Swal.mixin({
       input: 'textarea',
       inputAttributes: {
@@ -459,8 +466,14 @@ export class PanelComponent implements OnInit {
             showConfirmButton: false,
             allowOutsideClick: false
           });
+          if(this.usuario_actual.rol == 'admin'){
+            responsable = "Administrador";
+          }
+          else if(this.usuario_actual.rol == 'area'){
+            responsable = "Director UPEV";
+          }
           this.http.post(this.servidor.ip + '/buzon_backend/cancelarSugerencia.php', JSON.stringify({
-            tkn: this.token, sugerencia: this.sugerencia_actual, descripcion: this.descripcion, usuario: 'Administrador'
+            tkn: this.token, sugerencia: this.sugerencia_actual, descripcion: this.descripcion, usuario: responsable
           }), {
             }).subscribe(res => {
               if (res['Error']) {
@@ -659,6 +672,7 @@ export class PanelComponent implements OnInit {
   }
 
   saveEditable(sugerencia, campo) {
+    var responsable = "";
     Swal.fire({
       type: 'info',
       title: 'Enviando petición',
@@ -666,8 +680,14 @@ export class PanelComponent implements OnInit {
       showConfirmButton: false,
       allowOutsideClick: false
     });
+    if(this.usuario_actual.rol == 'admin'){
+      responsable = "Administrador";
+    }
+    else if(this.usuario_actual.rol == 'area'){
+      responsable = "Director UPEV";
+    }
     this.http.post(this.servidor.ip + '/buzon_backend/editaSugerencia.php', JSON.stringify({
-      tkn: this.token, sugerencia: sugerencia, campo: campo
+      tkn: this.token, sugerencia: sugerencia, campo: campo, responsable: responsable
     }), {
       }).subscribe(res => {
         if (res['Error']) {
