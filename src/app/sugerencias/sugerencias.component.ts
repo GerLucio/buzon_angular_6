@@ -28,6 +28,7 @@ export class SugerenciasComponent implements OnInit {
   key: string = "6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X";
   correo_valido: boolean;
   telefono_valido: boolean;
+  click_captcha : boolean;
 
   @ViewChild('inputArchivo')
   inputArchivo: ElementRef;
@@ -40,6 +41,7 @@ export class SugerenciasComponent implements OnInit {
     this.captcha_valido = false;
     this.correo_valido = false;
     this.telefono_valido = true;
+    this.click_captcha = true;
     this.obtenTiposSugerencias();
     this.obtenTiposUsuarios();
     this.obtenRelaciones();
@@ -367,13 +369,15 @@ export class SugerenciasComponent implements OnInit {
   }
 
   resolved(captchaResponse: string) {
-    Swal.fire({
-      position: 'top-end',
-      type: 'info',
-      title: 'Validando captcha',
-      text: 'Espera un momento por favor',
-      showConfirmButton: false
-    });
+    if(this.click_captcha){
+      Swal.fire({
+        position: 'top-end',
+        type: 'info',
+        title: 'Validando captcha',
+        text: 'Espera un momento por favor',
+        showConfirmButton: false
+      });
+    }
     this.modelo.token_captcha = captchaResponse;
     this.http.post(this.servidor.ip + '/buzon_backend/validaCaptcha.php', JSON.stringify({
       token_captcha: this.modelo.token_captcha
@@ -381,6 +385,7 @@ export class SugerenciasComponent implements OnInit {
     }).subscribe(res => {
       if (res['Error']) {
         this.captcha_valido = false;
+        this.click_captcha = true;
       }
       else {
         Swal.fire({
@@ -391,6 +396,7 @@ export class SugerenciasComponent implements OnInit {
           timer: 2000
         });
         this.captcha_valido = true;
+        this.click_captcha = false;
       }
     });
   }
