@@ -85,7 +85,9 @@
               </div>
             </div>
 
-            <div class="col-lg-1">
+            <div [ngClass]="{
+              'col-lg-1' : estado_actual.estado != 'Recibida', 
+              'col-md-3': estado_actual.estado == 'Recibida'}" class="col-lg-1">
               <button type="submit" [disabled]="validaBotonLimpia()" (click)="limpia()" class="btn btn-warning btn-sm btn-grp col"
                 title="Borrar filtros"><i class="fa fa-eraser" aria-hidden="true"></i> Borrar</button>
             </div>
