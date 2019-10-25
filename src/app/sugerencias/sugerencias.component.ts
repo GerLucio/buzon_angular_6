@@ -191,6 +191,7 @@ export class SugerenciasComponent implements OnInit {
         this.modelo.telefono = this.modelo.telefono.replace(caracter, '');
       }
     }
+    longitud = this.modelo.telefono.length;
     if(longitud == 0 || longitud == 10){
       this.telefono_valido = true;
       return;
