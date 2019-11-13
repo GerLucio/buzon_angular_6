@@ -49,31 +49,30 @@
             </div>
 
             <!--Fecha inicio-->
-              <div class="form-group col-md-3 col-6">
-                <div>
-                  <input type="date" class="form-control form-control-sm" id="fecha_i" name="fecha_i"
-                    [(ngModel)]="modelo.fecha_i" #fecha_i="ngModel" [ngClass]="{
+            <div class="form-group col-md-3 col-6">
+              <div>
+                <input type="date" class="form-control form-control-sm" id="fecha_i" name="fecha_i"
+                  [(ngModel)]="modelo.fecha_i" #fecha_i="ngModel" [ngClass]="{
                                   'is-valid' : fecha_i.touched && fecha_i.valid, 
                                   'is-invalid': fecha_i.touched && fecha_i.invalid}">
-                </div>
               </div>
+            </div>
 
-              <!--Fecha fin-->
-              <div class="form-group col-md-3 col-6">
-                <div>
-                  <input type="date" class="form-control form-control-sm" id="fecha_f" name="fecha_f"
-                    [(ngModel)]="modelo.fecha_f" #fecha_f="ngModel" [ngClass]="{
+            <!--Fecha fin-->
+            <div class="form-group col-md-3 col-6">
+              <div>
+                <input type="date" class="form-control form-control-sm" id="fecha_f" name="fecha_f"
+                  [(ngModel)]="modelo.fecha_f" #fecha_f="ngModel" [ngClass]="{
                                 'is-valid' : fecha_f.touched && fecha_f.valid, 
                                 'is-invalid': fecha_f.touched && fecha_f.invalid}"
-                    (change)="filtraFecha($event, 'filtro_fecha')">
-                </div>
+                  (change)="filtraFecha($event, 'filtro_fecha')">
               </div>
+            </div>
 
             <!--Área de asignación-->
             <div *ngIf="estado_actual.estado != 'Recibida'" class="form-group col-lg-2 col-md-3">
               <select class="form-control form-control-sm" id="area" name="area" [(ngModel)]="modelo.area"
-              (change)="verTabla(estado_actual)"
-                #area="ngModel" [ngClass]="{
+                (change)="verTabla(estado_actual)" #area="ngModel" [ngClass]="{
                 'is-valid' : area.touched && area.valid, 
                 'is-invalid': area.touched && area.invalid}">
                 <option value="0">Sin registro</option>
@@ -88,8 +87,9 @@
             <div [ngClass]="{
               'col-lg-1' : estado_actual.estado != 'Recibida', 
               'col-md-3': estado_actual.estado == 'Recibida'}" class="col-lg-1">
-              <button type="submit" [disabled]="validaBotonLimpia()" (click)="limpia()" class="btn btn-warning btn-sm btn-grp col"
-                title="Borrar filtros"><i class="fa fa-eraser" aria-hidden="true"></i> Borrar</button>
+              <button type="submit" [disabled]="validaBotonLimpia()" (click)="limpia()"
+                class="btn btn-warning btn-sm btn-grp col" title="Borrar filtros"><i class="fa fa-eraser"
+                  aria-hidden="true"></i> Borrar</button>
             </div>
 
           </div>
@@ -385,6 +385,12 @@
                   <th>Archivo adjunto</th>
                   <td><i *ngIf="sugerencia_actual.archivo" (click)="ver_documento(sugerencia_actual.archivo)"
                       class="fa fa-download" aria-hidden="true"></i>
+                  </td>
+                </tr>
+                <tr *ngIf="sugerencia_actual.comentario_final">
+                  <th>Comentario del titular del área de asignación</th>
+                  <td>
+                    {{sugerencia_actual.comentario_final}}
                   </td>
                 </tr>
                 <tr>
