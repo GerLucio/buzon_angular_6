@@ -6,15 +6,15 @@
         <h3><b>Bienvenido</b></h3>
         <p>
           <strong>La Unidad Politécnica para la Educación Virtual (UPEV)</strong> tiene como uno de sus objetivos
-          ofrecerte servicios con
-          la más alta calidad y calidez.
-          Te invitamos a que te sumes a este esfuerzo, haciéndonos saber tu felicitación, comentario, sugerencia y/o
-          queja, tanto de este sitio como
-          de los servicios que ofrece la Unidad.
+          ofrecerte servicios con la más alta calidad y calidez, así mismo, promover un entorno organizacional favorable
+          en
+          tu centro de trabajo, por ello te invitamos a que te sumes a este esfuerzo, haciéndonos saber tu felicitación,
+          comentario, sugerencia y/o queja, tanto de este sitio como de los servicios que ofrece la Unidad.
         </p>
         <p>
           La información aquí vertida es estrictamente confidencial y sólo será utilizada con el propósito de mejorar
-          nuestro servicio.
+          nuestro
+          servicio. <span class="editable" (click)="abreInfografia()">Más información</span>.
         </p>
         <hr>
         <h5><b>Queremos saber tu opinión</b></h5>
@@ -57,6 +57,7 @@
 
           </div>
 
+          <!--Usuario interno-->
           <div *ngIf="modelo.usuario==1">
             <!--Comentario-->
             <div class="form-row">
@@ -109,7 +110,7 @@
                   <input type="checkbox" [(ngModel)]="datos_personales" name="datos_personales"
                     class="custom-control-input" id="datos_personales">
                   <label class="custom-control-label" for="datos_personales">
-                    <b>¿Deseas mantenerte informado respecto al estado de tu opinión y/o sugerencia?</b>
+                    <b>¿Deseas dar tus datos en caso de que tengamos alguna duda a tu comentario?</b>
                   </label>
                 </div>
               </div>
@@ -204,6 +205,7 @@
 
           </div>
 
+          <!--Usuario externo-->
           <div *ngIf="modelo.usuario==2">
 
             <div class="form-row">
@@ -301,7 +303,7 @@
 
             </div>
 
-            <div class="form-group">
+            <!--<div class="form-group">
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" [(ngModel)]="datos_personales" name="datos_personales"
                   class="custom-control-input" id="datos_personales">
@@ -309,90 +311,88 @@
                   <b>¿Deseas mantenerte informado respecto al estado de tu opinión y/o sugerencia?</b>
                 </label>
               </div>
-            </div>
+            </div>-->
 
-            <div *ngIf="datos_personales">
-              <div class="form-row">
-                <!--Nombre-->
-                <div class="form-group col-md-4">
-                  <label for="nombre">* Nombre (s)</label>
-                  <input type="text" class="form-control form-control-sm" id="nombre" placeholder="Nombre (s)"
-                    name="nombre" required [(ngModel)]="modelo.nombre" #nombre="ngModel" maxlength="32" [ngClass]="{
+            <div class="form-row">
+              <!--Nombre-->
+              <div class="form-group col-md-4">
+                <label for="nombre">* Nombre (s)</label>
+                <input type="text" class="form-control form-control-sm" id="nombre" placeholder="Nombre (s)"
+                  name="nombre" required [(ngModel)]="modelo.nombre" #nombre="ngModel" maxlength="32" [ngClass]="{
                         'is-valid' : nombre.touched && nombre.valid, 
                         'is-invalid': nombre.touched && nombre.invalid}">
-                  <div *ngIf="nombre.invalid" class="invalid-feedback">
-                    <div *ngIf="nombre.errors.required">Campo obligatorio</div>
-                  </div>
+                <div *ngIf="nombre.invalid" class="invalid-feedback">
+                  <div *ngIf="nombre.errors.required">Campo obligatorio</div>
                 </div>
+              </div>
 
-                <!--Apellido paterno-->
-                <div class="form-group col-md-4">
-                  <label for="apellidop">* Apellido Paterno</label>
-                  <input type="text" class="form-control form-control-sm" id="apellidop" name="apellidop" required
-                    [(ngModel)]="modelo.apellidop" #apellidop="ngModel" placeholder="Apellido Paterno" maxlength="16"
-                    [ngClass]="{
+              <!--Apellido paterno-->
+              <div class="form-group col-md-4">
+                <label for="apellidop">* Apellido Paterno</label>
+                <input type="text" class="form-control form-control-sm" id="apellidop" name="apellidop" required
+                  [(ngModel)]="modelo.apellidop" #apellidop="ngModel" placeholder="Apellido Paterno" maxlength="16"
+                  [ngClass]="{
                           'is-valid' : apellidop.touched && apellidop.valid, 
                           'is-invalid': apellidop.touched && apellidop.invalid}">
-                  <div *ngIf="apellidop.invalid" class="invalid-feedback">
-                    <div *ngIf="apellidop.errors.required">Campo obligatorio</div>
-                  </div>
+                <div *ngIf="apellidop.invalid" class="invalid-feedback">
+                  <div *ngIf="apellidop.errors.required">Campo obligatorio</div>
                 </div>
+              </div>
 
-                <!--Apellido materno-->
-                <div class="form-group col-md-4">
-                  <label for="apellidom">* Apellido Materno</label>
-                  <input type="text" class="form-control form-control-sm" id="apellidom" name="apellidom" required
-                    [(ngModel)]="modelo.apellidom" #apellidom="ngModel" placeholder="Apellido Materno" maxlength="16"
-                    [ngClass]="{
+              <!--Apellido materno-->
+              <div class="form-group col-md-4">
+                <label for="apellidom">* Apellido Materno</label>
+                <input type="text" class="form-control form-control-sm" id="apellidom" name="apellidom" required
+                  [(ngModel)]="modelo.apellidom" #apellidom="ngModel" placeholder="Apellido Materno" maxlength="16"
+                  [ngClass]="{
                           'is-valid' : apellidom.touched && apellidom.valid, 
                           'is-invalid': apellidom.touched && apellidom.invalid}">
-                  <div *ngIf="apellidom.invalid" class="invalid-feedback">
-                    <div *ngIf="apellidom.errors.required">Campo obligatorio</div>
-                  </div>
+                <div *ngIf="apellidom.invalid" class="invalid-feedback">
+                  <div *ngIf="apellidom.errors.required">Campo obligatorio</div>
                 </div>
-
               </div>
 
-              <div class="form-row">
+            </div>
 
-                <!--Correo-->
-                <div class="form-group col-md-4">
-                  <label for="correo">* Correo</label>
-                  <input type="text" (keyup)="validaCorreo()" class="form-control form-control-sm" id="correo"
-                    placeholder="Correo" name="correo" required [(ngModel)]="modelo.correo" #correo="ngModel"
-                    maxlength="32" [ngClass]="{
+            <div class="form-row">
+
+              <!--Correo-->
+              <div class="form-group col-md-4">
+                <label for="correo">* Correo</label>
+                <input type="text" (keyup)="validaCorreo()" class="form-control form-control-sm" id="correo"
+                  placeholder="Correo" name="correo" required [(ngModel)]="modelo.correo" #correo="ngModel"
+                  maxlength="32" [ngClass]="{
                           'is-valid' : correo.touched && correo_valido, 
                           'is-invalid': correo.touched && !correo_valido}" email>
-                  <div *ngIf="correo.invalid" class="invalid-feedback">
-                    <div *ngIf="correo.errors.required">Campo obligatorio</div>
-                    <div *ngIf="correo.errors.email">El correo no es válido</div>
-                  </div>
+                <div *ngIf="correo.invalid" class="invalid-feedback">
+                  <div *ngIf="correo.errors.required">Campo obligatorio</div>
+                  <div *ngIf="correo.errors.email">El correo no es válido</div>
                 </div>
+              </div>
 
-                <!--Teléfono-->
-                <div class="form-group col-md-4">
-                  <label for="telefono">Teléfono (10 digitos)</label>
-                  <input type="text" (keyup)="validaTelefono()" class="form-control form-control-sm" id="telefono"
-                    placeholder="Teléfono" name="telefono" [(ngModel)]="modelo.telefono" #telefono="ngModel"
-                    maxlength="10" [ngClass]="{
+              <!--Teléfono-->
+              <div class="form-group col-md-4">
+                <label for="telefono">Teléfono (10 digitos)</label>
+                <input type="text" (keyup)="validaTelefono()" class="form-control form-control-sm" id="telefono"
+                  placeholder="Teléfono" name="telefono" [(ngModel)]="modelo.telefono" #telefono="ngModel"
+                  maxlength="10" [ngClass]="{
                           'is-valid' : telefono.touched && telefono.valid, 
                           'is-invalid': telefono.touched && telefono.invalid}" pattern="[0-9]{10,10}">
-                  <div *ngIf="telefono.invalid" class="invalid-feedback">
-                    <div *ngIf="telefono.errors.required">Campo obligatorio</div>
-                  </div>
+                <div *ngIf="telefono.invalid" class="invalid-feedback">
+                  <div *ngIf="telefono.errors.required">Campo obligatorio</div>
                 </div>
-
               </div>
+
             </div>
 
             <re-captcha (resolved)="resolved($event)" siteKey="6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X"></re-captcha>
-            <div *ngIf="!datos_personales" class="text-right">
+            <!--<div *ngIf="!datos_personales" class="text-right">
               <input
                 [disabled]="!modelo.tipo || !modelo.relacion || !modelo.nivel || !modelo.unidad || !modelo.sugerencia || !captcha_valido"
                 type="submit" value="Enviar" (click)="enviarSugerencia()"
                 class="btn btn-primary btn-sm btn-grp col-md-2" />
-            </div>
-            <div *ngIf="datos_personales" class="text-right">
+            </div>-->
+            <div class="text-right">
               <input
                 [disabled]="!modelo.tipo || !modelo.relacion || !modelo.nivel || !modelo.unidad || !modelo.sugerencia || !captcha_valido || !modelo.correo || !modelo.apellidom || !modelo.apellidop || !modelo.nombre || !correo_valido || !telefono_valido"
                 type="submit" value="Enviar" (click)="enviarSugerencia()"

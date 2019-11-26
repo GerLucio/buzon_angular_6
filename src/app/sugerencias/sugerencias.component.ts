@@ -28,7 +28,7 @@ export class SugerenciasComponent implements OnInit {
   key: string = "6LdnbqoUAAAAAEZM-oDvTcDkJaCjMCT6AA4BtT8X";
   correo_valido: boolean;
   telefono_valido: boolean;
-  click_captcha : boolean;
+  click_captcha: boolean;
 
   @ViewChild('inputArchivo')
   inputArchivo: ElementRef;
@@ -181,18 +181,23 @@ export class SugerenciasComponent implements OnInit {
   }
 
   validaTelefono() {
-    var longitud = this.modelo.telefono.length;
+    var longitud = 0;
+    if(this.modelo.telefono)
+      longitud = this.modelo.telefono.length;
     if (longitud > 10) {
       this.modelo.telefono = this.modelo.telefono.substring(0, 9);
     }
-    for(var i = 0; i < longitud; i++){
+    for (var i = 0; i < longitud; i++) {
       var caracter = this.modelo.telefono.charAt(i);
-      if(isNaN(caracter)){
+      if (isNaN(caracter)) {
         this.modelo.telefono = this.modelo.telefono.replace(caracter, '');
+        longitud = 0;
+        if(this.modelo.telefono)
+          longitud = this.modelo.telefono.length;
       }
     }
-    longitud = this.modelo.telefono.length;
-    if(longitud == 0 || longitud == 10){
+
+    if (longitud == 0 || longitud == 10) {
       this.telefono_valido = true;
       return;
     }
@@ -311,9 +316,11 @@ export class SugerenciasComponent implements OnInit {
   }
 
   validaCorreo() {
-    if (this.modelo.correo.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/)) {
-      this.correo_valido = true;
-      return;
+    if (this.modelo.correo) {
+      if (this.modelo.correo.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/)) {
+        this.correo_valido = true;
+        return;
+      }
     }
     this.correo_valido = false;
   }
@@ -370,7 +377,7 @@ export class SugerenciasComponent implements OnInit {
   }
 
   resolved(captchaResponse: string) {
-    if(this.click_captcha){
+    if (this.click_captcha) {
       Swal.fire({
         position: 'top-end',
         type: 'info',
@@ -446,6 +453,18 @@ export class SugerenciasComponent implements OnInit {
         this.captcha_valido = false;
         this.correo_valido = false;
         this.telefono_valido = false;
+      }
+    });
+  }
+
+  abreInfografia() {
+    Swal.fire({
+      imageUrl: '../../assets/img/infographics.jpg',
+      width: 858,
+      imageAlt: 'Infografía de información'
+    }).then((result) => {
+      if (result.value) {
+        this.muestraFlotante();
       }
     });
   }
